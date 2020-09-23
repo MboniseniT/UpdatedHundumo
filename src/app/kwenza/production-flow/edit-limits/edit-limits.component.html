@@ -1,0 +1,791 @@
+<div class="container">
+    <button type="button" class="btn btn-info waves-light" aria-label="Close" mdbWavesEffect (click)="back()"> <i
+            class="fa fa-arrow-left"></i> BACK</button>
+    <h3 style="text-align: center;">Update Monthly Target For {{assetName}}: {{date | date: "MMM-yyyy"}}</h3>
+    <br>
+
+    <form class="text-center" style="color: #757575;" [formGroup]="assetLimitForm" (ngSubmit)="EditLimit()">
+        <h4 style="text-align: center; color: brown;">SHE Incidents</h4>
+        <br>
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="SheMonthTarget" id="SheMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="SheMonthTarget">SHE Incidents Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="SheTarget" id="SheTarget"
+                        class="form-control" mdbInput>
+                    <label for="SheTarget">SHE Incidents Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="SheBudget" id="SheBudget"
+                        class="form-control" mdbInput>
+                    <label for="SheBudget">SHE Incidents Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="SheThreshold" id="SheBudget"
+                        class="form-control" mdbInput>
+                    <label for="SheThreshold">SHE Incidents Threshold</label>
+                </div>
+            </div>
+
+        </div>
+        <h4 style="text-align: center; color: orangered;">Drill and Blast</h4>
+        <br>
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="Day1st4HoursEndsMonthTarget" id="Day1st4HoursEndsMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="Day1st4HoursEndsMonthTarget">Day 1st 4 Hours Ends Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="Night1st4HoursEndsMonthTarget"
+                        id="Night1st4HoursEndsMonthTarget" class="form-control" mdbInput>
+                    <label for="Night1st4HoursEndsMonthTarget">Night 1st 4Hours Ends Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsDrilledMonthTarget" id="EndsDrilledMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="EndsDrilledMonthTarget">Ends Drilled Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsBlastedMonthTarget" id="EndsBlastedMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="EndsBlastedMonthTarget">Ends Blasted Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="UnlashedEndsMonthTarget" id="UnlashedEndsMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="UnlashedEndsMonthTarget">Unlashed Ends Month Target</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="Day1st4HoursEndsTarget" id="Day1st4HoursEndsTarget"
+                        class="form-control" mdbInput>
+                    <label for="Day1st4HoursEndsTarget">Day 1st 4 Hours Ends Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="Night1st4HoursEndsTarget" id="Night1st4HoursEndsTarget"
+                        class="form-control" mdbInput>
+                    <label for="Night1st4HoursEndsTarget">Night 1st 4Hours Ends Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsDrilledTarget" id="EndsDrilledTarget" class="form-control"
+                        mdbInput>
+                    <label for="EndsDrilledTarget">Ends Drilled Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsBlastedTarget" id="EndsBlastedTarget" class="form-control"
+                        mdbInput>
+                    <label for="EndsBlastedTarget">Ends Blasted Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="UnlashedEndsTarget" id="UnlashedEndsTarget"
+                        class="form-control" mdbInput>
+                    <label for="UnlashedEndsTarget">Unlashed Ends Target</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="Day1st4HoursEndsBudget" id="Day1st4HoursEndsBudget"
+                        class="form-control" mdbInput>
+                    <label for="Day1st4HoursEndsBudget">Day 1st 4 Hours Ends Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="Night1st4HoursEndsBudget" id="Night1st4HoursEndsBudget"
+                        class="form-control" mdbInput>
+                    <label for="Night1st4HoursEndsBudget">Night 1st 4Hours Ends Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsDrilledBudget" id="EndsDrilledBudget" class="form-control"
+                        mdbInput>
+                    <label for="EndsDrilledBudget">Ends Drilled Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsBlastedBudget" id="EndsBlastedBudget" class="form-control"
+                        mdbInput>
+                    <label for="EndsBlastedBudget">Ends Blasted Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="UnlashedEndsBudget" id="UnlashedEndsBudget"
+                        class="form-control" mdbInput>
+                    <label for="UnlashedEndsBudget">Unlashed Ends Budget</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="Day1st4HoursEndsThreshold" id="Day1st4HoursEndsThreshold"
+                        class="form-control" mdbInput>
+                    <label for="Day1st4HoursEndsThreshold">Day 1st 4 Hours Ends Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="Night1st4HoursEndsThreshold" id="Night1st4HoursEndsThreshold"
+                        class="form-control" mdbInput>
+                    <label for="Night1st4HoursEndsThreshold">Night 1st 4Hours Ends Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsDrilledThreshold" id="EndsDrilledThreshold"
+                        class="form-control" mdbInput>
+                    <label for="EndsDrilledThreshold">Ends Drilled Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsBlastedThreshold" id="EndsBlastedThreshold"
+                        class="form-control" mdbInput>
+                    <label for="EndsBlastedThreshold">Ends Blasted Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="UnlashedEndsThreshold" id="UnlashedEndsThreshold"
+                        class="form-control" mdbInput>
+                    <label for="UnlashedEndsThreshold">Unlashed Ends Threshold</label>
+                </div>
+            </div>
+        </div>
+
+        <h4 style="text-align: center; color: green;">Load and Haul</h4>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsLashedMonthTarget" id="EndsLashedMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="EndsLashedMonthTarget">Ends Lashed Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="TotalCleanedEndsMonthTarget" id="TotalCleanedEndsMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="TotalCleanedEndsMonthTarget">Total Cleaned Ends Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="LashedPreparedForSupportMonthTarget"
+                        id="LashedPreparedForSupportMonthTarget" class="form-control" mdbInput>
+                    <label for="LashedPreparedForSupportMonthTarget">Lashed Prepared For Support Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="MuckbayTonsMonthTarget" id="MuckbayTonsMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="MuckbayTonsMonthTarget">Muckbay Tons Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="HoistedTonsMonthTarget" id="HoistedTonsMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="HoistedTonsMonthTarget">Hoisted Tons Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="UGCrusherBinMonthTarget" id="UGCrusherBinMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="UGCrusherBinMonthTarget">UGCrusherBin Month Target </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsLashedTarget" id="EndsLashedTarget" class="form-control"
+                        mdbInput>
+                    <label for="EndsLashedTarget">Ends Lashed Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="TotalCleanedEndsTarget" id="TotalCleanedEndsTarget"
+                        class="form-control" mdbInput>
+                    <label for="TotalCleanedEndsTarget">Total Cleaned Ends Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="LashedPreparedForSupportTarget"
+                        id="LashedPreparedForSupportTarget" class="form-control" mdbInput>
+                    <label for="LashedPreparedForSupportTarget">Lashed Prepared For Support Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="MuckbayTonsTarget" id="MuckbayTonsTarget" class="form-control"
+                        mdbInput>
+                    <label for="MuckbayTonsTarget">Muckbay Tons Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="HoistedTonsTarget" id="HoistedTonsTarget" class="form-control"
+                        mdbInput>
+                    <label for="HoistedTonsTarget">Hoisted Tons Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="UGCrusherBinTarget" id="UGCrusherBinTarget"
+                        class="form-control" mdbInput>
+                    <label for="UGCrusherBinTarget">UGCrusherBin Target </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsLashedBudget" id="EndsLashedBudget" class="form-control"
+                        mdbInput>
+                    <label for="EndsLashedBudget">Ends Lashed Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="TotalCleanedEndsBudget" id="TotalCleanedEndsBudget"
+                        class="form-control" mdbInput>
+                    <label for="TotalCleanedEndsBudget">Total Cleaned Ends Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="LashedPreparedForSupportBudget"
+                        id="LashedPreparedForSupportBudget" class="form-control" mdbInput>
+                    <label for="LashedPreparedForSupportBudget">Lashed Prepared For Support Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="MuckbayTonsBudget" id="MuckbayTonsBudget" class="form-control"
+                        mdbInput>
+                    <label for="MuckbayTonsBudget">Muckbay Tons Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="HoistedTonsBudget" id="HoistedTonsBudget" class="form-control"
+                        mdbInput>
+                    <label for="HoistedTonsBudget">Hoisted Tons Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="UGCrusherBinBudget" id="UGCrusherBinBudget"
+                        class="form-control" mdbInput>
+                    <label for="UGCrusherBinBudget">UGCrusherBin Budget </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsLashedThreshold" id="EndsLashedThreshold"
+                        class="form-control" mdbInput>
+                    <label for="EndsLashedThreshold">Ends Lashed Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="TotalCleanedEndsThreshold" id="TotalCleanedEndsThreshold"
+                        class="form-control" mdbInput>
+                    <label for="TotalCleanedEndsThreshold">Total Cleaned Ends Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="LashedPreparedForSupportThreshold"
+                        id="LashedPreparedForSupportThreshold" class="form-control" mdbInput>
+                    <label for="LashedPreparedForSupportThreshold">Lashed Prepared For Support Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="MuckbayTonsThreshold" id="MuckbayTonsThreshold"
+                        class="form-control" mdbInput>
+                    <label for="MuckbayTonsThreshold">Muckbay Tons Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="HoistedTonsThreshold" id="HoistedTonsThreshold"
+                        class="form-control" mdbInput>
+                    <label for="HoistedTonsThreshold">Hoisted Tons Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="UGCrusherBinBudget" id="UGCrusherBinBudget"
+                        class="form-control" mdbInput>
+                    <label for="UGCrusherBinBudget">UGCrusherBin Budget </label>
+                </div>
+            </div>
+
+        </div>
+
+        <h4 style="text-align: center; color: black;">Support</h4>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsSupportedMonthTarget" id="EndsSupportedMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="EndsSupportedMonthTarget">Ends Supported Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="SupportedEndsMonthTarget" id="SupportedEndsMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="SupportedEndsMonthTarget">Supported Ends Month Target</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsSupportedTarget" id="EndsSupportedTarget"
+                        class="form-control" mdbInput>
+                    <label for="EndsSupportedTarget">Ends Supported Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="SupportedEndsTarget" id="SupportedEndsTarget"
+                        class="form-control" mdbInput>
+                    <label for="SupportedEndsTarget">Supported Ends Target</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsSupportedBudget" id="EndsSupportedBudget"
+                        class="form-control" mdbInput>
+                    <label for="EndsSupportedBudget">Ends Supported Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="SupportedEndsBudget" id="SupportedEndsBudget"
+                        class="form-control" mdbInput>
+                    <label for="SupportedEndsBudget">Supported Ends Budget</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsSupportedThreshold" id="EndsSupportedThreshold"
+                        class="form-control" mdbInput>
+                    <label for="EndsSupportedThreshold">Ends Supported Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="SupportedEndsThreshold" id="SupportedEndsThreshold"
+                        class="form-control" mdbInput>
+                    <label for="SupportedEndsThreshold">Supported Ends Threshold</label>
+                </div>
+            </div>
+
+        </div>
+
+        <h4 style="text-align: center; color: green;">Face Preparation </h4>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsPreparedMonthTarget" id="EndsPreparedMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="EndsPreparedMonthTarget">Ends Prepared Month Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="PreparedMarkedEndsMonthTarget"
+                        id="PreparedMarkedEndsMonthTarget" class="form-control" mdbInput>
+                    <label for="PreparedMarkedEndsMonthTarget">Prepared Marked Ends Month Target</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsPreparedTarget" id="EndsPreparedTarget"
+                        class="form-control" mdbInput>
+                    <label for="EndsPreparedTarget">Ends Prepared Target</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="PreparedMarkedEndsTarget" id="PreparedMarkedEndsTarget"
+                        class="form-control" mdbInput>
+                    <label for="PreparedMarkedEndsTarget">Prepared Marked Ends Target</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsPreparedBudget" id="EndsPreparedBudget"
+                        class="form-control" mdbInput>
+                    <label for="EndsPreparedBudget">Ends Prepared Budget</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="PreparedMarkedEndsBudget" id="PreparedMarkedEndsBudget"
+                        class="form-control" mdbInput>
+                    <label for="PreparedMarkedEndsBudget">Prepared Marked Ends Budget</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="EndsPreparedThreshold" id="EndsPreparedThreshold"
+                        class="form-control" mdbInput>
+                    <label for="EndsPreparedThreshold">Ends Prepared Threshold</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="PreparedMarkedEndsThreshold" id="PreparedMarkedEndsThreshold"
+                        class="form-control" mdbInput>
+                    <label for="PreparedMarkedEndsThreshold">Prepared Marked Ends Threshold</label>
+                </div>
+            </div>
+
+        </div>
+
+        <h4 style="text-align: center; color: red;">Equipment Status</h4>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DrillRigsMonthTarget" id="DrillRigsMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="DrillRigsMonthTarget">DrillRigs Month Target </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="LHDsMonthTarget" id="LHDsMonthTarget" class="form-control"
+                        mdbInput>
+                    <label for="LHDsMonthTarget">LHDs Month Target </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DumpTrucksMonthTarget" id="DumpTrucksMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="DumpTrucksMonthTarget">Dump Trucks Month Target </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="BoltersMonthTarget" id="BoltersMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="BoltersMonthTarget">Bolters Month Target </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DriftersMonthTarget" id="DriftersMonthTarget"
+                        class="form-control" mdbInput>
+                    <label for="DriftersMonthTarget">Drifters Month Target </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DrillRigsTarget" id="DrillRigsTarget" class="form-control"
+                        mdbInput>
+                    <label for="DrillRigsTarget">DrillRigs Target </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="LHDsTarget" id="LHDsTarget" class="form-control" mdbInput>
+                    <label for="LHDsTarget">LHDs Target </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DumpTrucksTarget" id="DumpTrucksTarget" class="form-control"
+                        mdbInput>
+                    <label for="DumpTrucksTarget">Dump Trucks Target </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="BoltersTarget" id="BoltersTarget" class="form-control"
+                        mdbInput>
+                    <label for="BoltersTarget">Bolters Target </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DriftersTarget" id="DriftersTarget" class="form-control"
+                        mdbInput>
+                    <label for="DriftersTarget">Drifters Target </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DrillRigsBudget" id="DrillRigsBudget" class="form-control"
+                        mdbInput>
+                    <label for="DrillRigsBudget">DrillRigs Budget </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="LHDsBudget" id="LHDsBudget" class="form-control" mdbInput>
+                    <label for="LHDsBudget">LHDs Budget </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DumpTrucksBudget" id="DumpTrucksBudget" class="form-control"
+                        mdbInput>
+                    <label for="DumpTrucksBudget">Dump Trucks Budget </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="BoltersBudget" id="BoltersBudget" class="form-control"
+                        mdbInput>
+                    <label for="BoltersBudget">Bolters Budget </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DriftersBudget" id="DriftersBudget" class="form-control"
+                        mdbInput>
+                    <label for="DriftersBudget">Drifters Budget </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DrillRigsThreshold" id="DrillRigsThreshold"
+                        class="form-control" mdbInput>
+                    <label for="DrillRigsThreshold">DrillRigs Threshold </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="LHDsThreshold" id="LHDsThreshold" class="form-control"
+                        mdbInput>
+                    <label for="LHDsThreshold">LHDs Threshold </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DumpTrucksThreshold" id="DumpTrucksThreshold"
+                        class="form-control" mdbInput>
+                    <label for="DumpTrucksThreshold">Dump Trucks Threshold </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="BoltersThreshold" id="BoltersThreshold" class="form-control"
+                        mdbInput>
+                    <label for="BoltersThreshold">Bolters Threshold </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="number" formControlName="DriftersThreshold" id="DriftersThreshold" class="form-control"
+                        mdbInput>
+                    <label for="DriftersThreshold">Drifters Threshold </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div *ngIf="loading" class="d-flex justify-content-center">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-red-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button [disabled]="!assetLimitForm.valid" rounded="true" block="true" *ngIf="!loading"
+            class="btn btn-outline btn-rounded my-4 waves-effect z-depth-0"
+            style="background-color:rgba(0, 108, 197, 0.822);font-weight: bold" type="submit">Save
+        </button>
+        &nbsp;&nbsp;
+    </form>
+
+</div>

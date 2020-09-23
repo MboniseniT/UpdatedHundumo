@@ -1,0 +1,89 @@
+<div class="container">
+    <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="back()"
+    style="background-color: rgba(0, 69, 125, 1) !important; color: white;"> <i class="fa fa-arrow-left"></i> BACK</button>
+
+<h5 style="text-align: center;">MANAGE ASSET PERMISSION</h5>
+<br>
+
+<form class="text-center" style="color: #757575;" [formGroup]="userAssetForm" (ngSubmit)="addAssetUser()">
+    <div class="form-row">
+
+        <div class="col">
+            <div class="md-form">
+                <mdb-select [options]="users" [filterEnabled]="true" [multiple]="false"
+                    [highlightFirst]="false" formControlName="UserId"
+                    label="* Select User To Add To Asset" [enableSelectAll]="false">
+                </mdb-select>
+
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="md-form">
+                <mdb-select [options]="organizations" [filterEnabled]="true" [multiple]="false"
+                    [highlightFirst]="false" formControlName="AssetNodeId"
+                    label="* Select Asset Node For The User" [enableSelectAll]="false">
+                </mdb-select>
+
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="md-form">
+                <mdb-checkbox (click)="assetAdmin()">Asset Admin
+                </mdb-checkbox>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div *ngIf="loading" class="d-flex justify-content-center">
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-red-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button [disabled]="!userAssetForm.valid" rounded="true" block="true" *ngIf="!loading" 
+        class="btn btn-outline btn-rounded my-4 waves-effect z-depth-0"
+        style="background-color:rgba(0, 108, 197, 0.822);font-weight: bold" type="submit">Add User Asset
+    </button>
+    &nbsp;&nbsp;
+</form>
+
+<br>
+
+<div>
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <thead>
+            <tr>
+                <th>Asset Node Name</th>
+                <th>Name</th>
+                <th>Email Address</th>
+                <th>Added By</th>
+                <th>Added On</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of assetNodesUsers" style="cursor: pointer;">
+                <td>{{user.assetNode}}</td>
+                <td>{{user.userNames}}</td>
+                <td>{{user.userEmail}}</td>
+                <td>{{user.reference}}</td>
+                <td>{{user.date | date: "dd MMM yyyy HH:MM"}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</div>

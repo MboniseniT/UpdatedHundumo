@@ -1,0 +1,240 @@
+<div class="container">
+    <button type="button" class="btn btn-info waves-light" aria-label="Close" mdbWavesEffect (click)="back()" style="background-color: rgba(0, 69, 125, 1); color: white;"> <i
+            class="fa fa-arrow-left"></i> BACK</button>
+    <h3 style="text-align: center;" *ngIf="assetName">Update For {{assetName}}: {{date | date: "dd-MMM-yyyy"}}</h3>
+    <br>
+
+    <form class="text-center" style="color: #757575;" [formGroup]="assetReadingsForm" (ngSubmit)="EditReadings()">
+
+        <div>
+            <h4 style="text-align: center; color: brown;">SHE Incidents</h4>
+            <br>
+            <div class="form-row">
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="md-form">
+                        <input type="number" formControlName="She" id="She"
+                            class="form-control" mdbInput>
+                        <label for="She">SHE Incidents </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h4 style="text-align: center; color: orangered;">Drill and Blast</h4>
+            <br>
+            <div class="form-row">
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="Day1st4HoursEnds" id="Day1st4HoursEnds"
+                            class="form-control" mdbInput>
+                        <label for="Day1st4HoursEnds">Day 1st 4 Hours Ends </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="Night1st4HoursEnds" id="Night1st4HoursEnds"
+                            class="form-control" mdbInput>
+                        <label for="Night1st4HoursEnds">Night 1st 4Hours Ends </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="EndsDrilled" id="EndsDrilled" class="form-control"
+                            mdbInput>
+                        <label for="EndsDrilled">Ends Drilled </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="EndsBlasted" id="EndsBlasted" class="form-control"
+                            mdbInput>
+                        <label for="EndsBlasted">Ends Blasted </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="UnlashedEnds" id="UnlashedEnds" class="form-control"
+                            mdbInput>
+                        <label for="UnlashedEnds">Unlashed Ends </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h4 style="text-align: center; color: green;">Load and Haul</h4>
+
+            <div class="form-row">
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="EndsLashed" id="EndsLashed" class="form-control" mdbInput>
+                        <label for="EndsLashed">Ends Lashed </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="TotalCleanedEnds" id="TotalCleanedEnds"
+                            class="form-control" mdbInput>
+                        <label for="TotalCleanedEnds">Total Cleaned Ends </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="LashedPreparedForSupport" id="LashedPreparedForSupport"
+                            class="form-control" mdbInput>
+                        <label for="LashedPreparedForSupport">Lashed Prepared For Support </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="MuckbayTons" id="MuckbayTons" class="form-control"
+                            mdbInput>
+                        <label for="MuckbayTons">Muckbay Tons </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="HoistedTons" id="HoistedTons" class="form-control"
+                            mdbInput>
+                        <label for="HoistedTons">Hoisted Tons </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="UGCrusherBin" id="UGCrusherBin" class="form-control"
+                            mdbInput>
+                        <label for="UGCrusherBin">UGCrusherBin </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div>
+
+
+            <h4 style="text-align: center; color: black;">Support</h4>
+
+            <div class="form-row">
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="EndsSupported" id="EndsSupported" class="form-control"
+                            mdbInput>
+                        <label for="EndsSupported">Ends Supported </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="SupportedEnds" id="SupportedEnds" class="form-control"
+                            mdbInput>
+                        <label for="SupportedEnds">Supported Ends </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div>
+            <h4 style="text-align: center; color: green;">Face Preparation</h4>
+
+            <div class="form-row">
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="EndsPrepared" id="EndsPrepared" class="form-control"
+                            mdbInput>
+                        <label for="EndsPrepared">Ends Prepared </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="PreparedMarkedEnds" id="PreparedMarkedEnds"
+                            class="form-control" mdbInput>
+                        <label for="PreparedMarkedEnds">Prepared Marked Ends </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <h4 style="text-align: center; color: red;">Equipment Status</h4>
+
+            <div class="form-row">
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="DrillRigs" id="DrillRigs" class="form-control" mdbInput>
+                        <label for="DrillRigs">DrillRigs </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="LHDs" id="LHDs" class="form-control" mdbInput>
+                        <label for="LHDs">LHDs </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="DumpTrucks" id="DumpTrucks" class="form-control" mdbInput>
+                        <label for="DumpTrucks">DumpTrucks </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="Bolters" id="Bolters" class="form-control" mdbInput>
+                        <label for="Bolters">Bolters </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="md-form">
+                        <input type="number" formControlName="Drifters" id="Drifters" class="form-control" mdbInput>
+                        <label for="Drifters">Drifters </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div *ngIf="loading" class="d-flex justify-content-center">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-red-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button [disabled]="!assetReadingsForm.valid" rounded="true" block="true" *ngIf="!loading"
+            class="btn btn-outline btn-rounded my-4 waves-effect z-depth-0"
+            style="background-color:rgba(0, 108, 197, 0.822);font-weight: bold" type="submit">Save
+        </button>
+        &nbsp;&nbsp;
+    </form>
+
+</div>

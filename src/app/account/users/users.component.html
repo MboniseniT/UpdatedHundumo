@@ -1,0 +1,258 @@
+<div class="container">
+
+    <br>
+    <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="back()"
+        style="background-color: rgb(41, 40, 40) !important; color: white;"> <i class="fa fa-arrow-left"></i>
+        BACK</button>
+
+    <h4 style="font-weight: bold; text-align: center; font-weight: 400;">ADD USER</h4>
+
+    <form class="text-center" style="color: #757575;" [formGroup]="userForm" (ngSubmit)="addUser()">
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="text" formControlName="FirstName" id="FirstName" class="form-control" mdbInput>
+                    <label for="FirstName">First Name</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="text" formControlName="LastName" id="LastName" class="form-control" mdbInput>
+                    <label for="LastName">Surname</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="email" formControlName="EmployeeEmail" id="EmployeeEmail" class="form-control"
+                        mdbInput>
+                    <label for="EmployeeEmail">Employee Email</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="roles" [filterEnabled]="true" [multiple]="false"
+                        [highlightFirst]="false" formControlName="RoleId"
+                        label="* Select Role" [enableSelectAll]="false">
+                    </mdb-select>
+    
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="groups" [filterEnabled]="true" [multiple]="false"
+                        [highlightFirst]="false" formControlName="GroupId"
+                        label="* Select Group, and give all group children rights" [enableSelectAll]="false">
+                    </mdb-select>
+    
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="binmakModules" [filterEnabled]="true" [multiple]="true"
+                        [highlightFirst]="false" formControlName="BinmakModuleId"
+                        label="* Allocate Binmak Modules" [enableSelectAll]="true">
+                    </mdb-select>
+    
+                </div>
+            </div>
+
+        </div>
+
+
+        <div *ngIf="loading" class="d-flex justify-content-center">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-red-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button [disabled]="!userForm.valid" rounded="true" block="true" *ngIf="!loading" 
+            class="btn btn-outline btn-rounded my-4 waves-effect z-depth-0"
+            style="background-color:rgba(0, 108, 197, 0.822);font-weight: bold" type="submit">Add User
+        </button>
+        &nbsp;&nbsp;
+    </form>
+
+    <br>
+
+    <div >
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email Address</th>
+                    <th>Top Asset Node</th>
+                    <th>Disable</th>
+                    <th>Re-Instate</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users" style="cursor: pointer;">
+                    <td>{{user.name}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>{{user.email}}</td>
+                   
+                    <td>{{user.topAssetNode.name}} [{{user.topAssetNode.code}}]</td>
+                    <td>
+                        <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="delete(user)" [disabled]="user.isDeleted"
+                        style="background-color: rgb(247, 6, 6)!important; color: white;"> <i class="fas fa-user-times"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="reinstate(user)" [disabled]="!user.isDeleted"
+                        style="background-color: rgb(43, 131, 50)!important; color: white;"> <i class="fas fa-user-check"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="edit(user)"
+                        style="background-color: rgba(0, 69, 125, 1) !important; color: white;"> <i class="fas fa-user-edit"></i>
+                        </button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--Edit Asset Node-->
+<div mdbModal #editUserModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+aria-labelledby="myBasicModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <h4 style="text-align: center;">Update User</h4>
+
+            <button type="button" class="close pull-right" aria-label="Close" (click)="editUserModal.hide()">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <h6 style="text-align: center;">User: {{firstName}} {{lastMame}}</h6>
+                    <br>
+
+                    <form class="text-center" style="color: #757575;" [formGroup]="editUserForm">
+                        <div class="form-row">
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <input type="text" formControlName="FirstName" id="FirstName" class="form-control" mdbInput>
+                                    <label for="FirstName">First Name</label>
+                                </div>
+                            </div>
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <input type="text" formControlName="LastName" id="LastName" class="form-control" mdbInput>
+                                    <label for="LastName">Surname</label>
+                                </div>
+                            </div>
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <input type="email" formControlName="EmployeeEmail" id="EmployeeEmail" class="form-control" readonly
+                                        mdbInput>
+                                    <label for="EmployeeEmail">Employee Email</label>
+                                </div>
+                            </div>
+                
+                        </div>
+                
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="md-form">
+                                    <mdb-select [options]="roles" [filterEnabled]="true" [multiple]="false"
+                                        [highlightFirst]="false" formControlName="RoleId"
+                                        label="* Select Role" [enableSelectAll]="false">
+                                    </mdb-select>
+                    
+                                </div>
+                            </div>
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <mdb-select [options]="groupAssetNodes" [filterEnabled]="true" [multiple]="false"
+                                        [highlightFirst]="false" formControlName="GroupId"
+                                        label="* Select Group, and give all group children rights" [enableSelectAll]="false">
+                                    </mdb-select>
+                    
+                                </div>
+                            </div>
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <mdb-select [options]="binmakUserModules" [filterEnabled]="true" [multiple]="true"
+                                        [highlightFirst]="false" formControlName="BinmakModuleId"
+                                        label="* Allocate Binmak Modules" [enableSelectAll]="true">
+                                    </mdb-select>
+                    
+                                </div>
+                            </div>
+                
+                        </div>
+                
+                
+                        <div *ngIf="loading" class="d-flex justify-content-center">
+                            <div class="preloader-wrapper big active">
+                                <div class="spinner-layer spinner-red-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                   
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info waves-light"
+                style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect
+                (click)="editUser()">
+                <i class="far fa-edit" aria-hidden="true"></i>
+                Update User</button>
+            <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                (click)="editUserModal.hide()"
+                style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                    class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+        </div>
+
+    </div>
+</div>
+</div>
+
+</div>

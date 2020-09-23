@@ -1,0 +1,225 @@
+<div class="container">
+    <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="back()"
+        style="background-color: rgba(0, 69, 125, 1)!important; color: white;"> <i class="fa fa-arrow-left"></i>
+        BACK</button>
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="border: 1px solid grey;">
+            <h5 style="text-align: center; color: orangered;">ASSET CONFIGURATION | PROCESSES</h5>
+            <br>
+            <h6 style="text-align: center;">CODE: {{code}}</h6>
+            <h6 style="text-align: center;">NAME: {{name}}</h6>
+            <h6 style="text-align: center;">PARENT: {{parent}}</h6>
+            <h6 style="text-align: center;">ROOT: {{root}}</h6>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+    <form class="text-center" style="color: #757575;" [formGroup]="prodConfigForm">
+
+        <div class="form-row">
+
+            <div class="col">
+                <mdb-date-picker name="ProcessDate" [placeholder]="'Select Process Date (any day for a month)'"
+                    formControlName="ProcessDate" required></mdb-date-picker>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="text" formControlName="ProcessName" id="ProcessName" class="form-control" mdbInput>
+                    <label for="ProcessName">Process Name</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="colors" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                        formControlName="ProcessColor" label="* Select Process Text Color" [enableSelectAll]="false">
+                    </mdb-select>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="colors" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                        formControlName="ProcessBackgroundColor" label="* Select Process Background Color"
+                        [enableSelectAll]="false">
+                    </mdb-select>
+                </div>
+            </div>
+
+        </div>
+
+        <button type="button" class="btn btn-info waves-light"
+            style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect
+            (click)="saveProcess()" [disabled]="!prodConfigForm.valid">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            Save New Processes</button>
+
+        <div *ngIf="loading" class="d-flex justify-content-center">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-red-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+<br>
+<br>
+    <div style="border: 1px dashed red;">
+        <form class="text-center" style="color: #757575;" [formGroup]="dateForm">
+            <div class="form-row">
+                <div class="col">
+                    <mdb-date-picker name="SelectedDate" [placeholder]="'Select Date To Set Target'"
+                        formControlName="SelectedDate" required></mdb-date-picker>
+                </div>
+                <div class="col" *ngIf="isBinmak || isAdmin">
+                    <button type="button" class="btn btn-info waves-light" style="float: right; background-color: rgba(0, 69, 125, 1) !important; color: white;" aria-label="Close"
+                        mdbWavesEffect (click)="saveDate()"> <i class="fa fa-calendar"></i> LOAD PROCESSESS FOR THE MONTH</button>
+                </div>
+            </div>
+        </form>
+    </div>
+<br>
+    <br>
+    <h6 style="color:  red; text-align: center;">PROCESSES FOR: {{name}} ({{savedDate}})</h6>
+    <br>
+
+    <div>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <thead>
+                <tr>
+                    <th>Process Name</th>
+                    <th>Process Color</th>
+                    <th>Process Background Color</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>Manage KPAs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of assetNodeProcesses" style="cursor: pointer;">
+                    <td>{{p.processName}}</td>
+                    <td>{{p.color}}</td>
+                    <td>{{p.backgroundColor}}</td>
+                    <td>
+                        <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                            (click)="editProcess(p)"
+                            style="background-color: rgba(0, 69, 125, 1) !important; color: white;"> <i
+                                class="far fa-edit"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                            (click)="deleteProcess(p)"
+                            style="background-color: red !important; color: white;"> <i
+                                class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                            (click)="kpa(p)"
+                            style="background-color: rgba(0, 69, 125, 1) !important; color: white;"> <i
+                                class="fa fa-cog"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--Edit Process Node-->
+<div mdbModal #editProcessModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+aria-labelledby="myBasicModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <h4 style="text-align: center;">Update Process</h4>
+
+            <button type="button" class="close pull-right" aria-label="Close" (click)="editProcessModal.hide()">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <h6 style="text-align: center; color: red;">Process: {{proName}}</h6>
+                    <br>
+                    <form class="text-center" style="color: #757575;" [formGroup]="prodConfigForm">
+
+                        <div class="form-row">
+                
+                            <div class="col">
+                                <mdb-date-picker name="ProcessDate" [placeholder]="'Select Process Date (any day for a month)'"
+                                    formControlName="ProcessDate" required readonly></mdb-date-picker>
+                            </div>
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <input type="text" formControlName="ProcessName" id="ProcessName" class="form-control" mdbInput>
+                                    <label for="ProcessName">Process Name</label>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="md-form">
+                                    <mdb-select [options]="colors" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                                        formControlName="ProcessColor" label="* Select Process Text Color" [enableSelectAll]="false">
+                                    </mdb-select>
+                                </div>
+                            </div>
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <mdb-select [options]="colors" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                                        formControlName="ProcessBackgroundColor" label="* Select Process Background Color"
+                                        [enableSelectAll]="false">
+                                    </mdb-select>
+                                </div>
+                            </div>
+                
+                        </div>
+            
+                
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info waves-light"
+                style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect
+                (click)="editP(prodConfigForm.value)" [disabled]="!prodConfigForm.valid">
+                <i class="far fa-edit" aria-hidden="true"></i>
+                Update Process</button>
+            <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                (click)="editProcessModal.hide()"
+                style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                    class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+        </div>
+
+    </div>
+</div>
+</div>
+
+</div>

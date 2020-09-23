@@ -1,0 +1,155 @@
+<div class="content" style="max-width: 100% !important;
+overflow-x: hidden !important;">
+  <div class="row">
+    <div class=".hidden-sm-down col-lg-5 col-md-5 col-sm-0" id="login-side-image">
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-12" id="login-content">
+      <p style="float: right;" id="loginBtn">
+        <button mdbBtn type="button" gradient="blue" rounded="true" (click)="login()" mdbWavesEffect>Login</button>
+      </p>
+      <div style="height: 100vh;">
+        <!--<div class="d-flex justify-content-center align-items-center h-100">
+              <div>-->
+        <div>
+
+          <div class="container">
+            <!-- Grid row -->
+            <div class="row">
+              <div class="login col-lg-12 col-md-12 col-sm-12">
+                <p style="text-align:center"><img src="./../../assets/binmak.png" alt="" width="155"></p>
+                <br>
+                <!--<p style="text-align: center;">Test</p>-->
+
+                <div>
+                  <h5 style="text-align:center; color: rgba(0, 69, 125, 1); font-weight: 500">BINMAK SOFTWARE SYSTEM |
+                    SIGN UP</h5>
+                  <br>
+                  <form [formGroup]="form">
+
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="md-form">
+                          <input mdbInput formControlName="FirstName" type="text" id="FirstName" class="form-control">
+                          <label for="FirstName" class="">First Name</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="md-form">
+                          <input mdbInput formControlName="LastName" type="text" id="LastName" class="form-control">
+                          <label for="LastName" class="">Last Name</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="md-form">
+                          <!--<input mdbInput formControlName="Country" type="text" id="Country" class="form-control">
+                          <label for="Country" class="">Country</label>-->
+
+                          <mdb-select [options]="countries" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                          formControlName="Country" label="Select Country" [enableSelectAll]="false">
+                        </mdb-select>
+
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="md-form">
+                          <input mdbInput formControlName="CompanyName" type="text" id="CompanyName" class="form-control">
+                          <label for="CompanyName" class="">Company Name</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="md-form">
+                          <input mdbInput formControlName="Address" type="text" id="Address" class="form-control">
+                          <label for="Address" class="">Address, 1st Floor South Block</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="md-form">
+                          <input mdbInput formControlName="Address2" type="text" id="Address2" class="form-control">
+                          <label for="Address2" class="">Borrowdale Office Park</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="md-form">
+                          <input mdbInput formControlName="City" type="text" id="City" class="form-control">
+                          <label for="City" class="">City</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <div class="md-form">
+                          <input mdbInput formControlName="Zip" type="text" id="Zip" class="form-control">
+                          <label for="Zip" class="">Zip</label>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                    <div class="md-form">
+                      <input mdbInput formControlName="Email" type="email" id="email" class="form-control">
+                      <label for="email" class="">Email</label>
+                    </div>
+
+
+
+                    <div class="md-form">
+                      <input mdbInput formControlName="Password" type="password" id="password" class="form-control">
+                      <label for="password" class="">Password</label>
+                    </div>
+
+                    <div class="md-form">
+                      <input mdbInput formControlName="ConfirmPassword" type="password" id="confirmPassword" class="form-control">
+                      <label for="password" class="">Confirm Password</label>
+                    </div>
+
+                    <button (click)="register()" *ngIf="!loading" [disabled]="!form.valid"
+                      class="btn btn-outline btn-rounded btn-block my-4 waves-effect z-depth-0"
+                      style="background-color:rgba(0, 69, 125, 1);font-weight: bold"><span
+                        style="color: white;">Register</span>
+                    </button>
+
+                    <button id="loginBtnAlign" *ngIf="!loading" (click)="login()"
+                      class="btn btn-outline btn-rounded btn-outline btn-block my-4 waves-effect z-depth-0"
+                      style="background-color:rgba(67, 106, 138);font-weight: bold"><span style="color: white;">Sign
+                        In</span>
+                    </button>
+
+                    <div *ngIf="loading" style="text-align: center;">
+                      <div class="preloader-wrapper big active crazy">
+                        <div class="spinner-layer spinner-blue-only">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="gap-patch">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

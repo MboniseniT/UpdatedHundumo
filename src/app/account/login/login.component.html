@@ -1,0 +1,107 @@
+<div class="content" style="max-width: 100% !important;
+overflow-x: hidden !important;">
+  <div class="row">
+    <div class=".hidden-sm-down col-lg-5 col-md-5 col-sm-0" id="login-side-image">
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-12" id="login-content">
+      <p style="float: right;" id="registerBtn">
+        <button mdbBtn type="button" gradient="blue" rounded="true" (click)="register()"
+          mdbWavesEffect>Register</button>
+      </p>
+      <div style="height: 100vh; overflow: hidden;">
+        <div class="d-flex justify-content-center align-items-center h-100">
+
+          <div class="container">
+            <!-- Grid row -->
+            <div class="row">
+              <div class="col-lg-2 col-md-2 col-sm-0"></div>
+              <div class="login col-lg-10 col-md-10 col-sm-12">
+                <p style="text-align:center"><img src="./../../assets/binmak.png" alt="" width="155"></p>
+                <br>
+                <!--<p style="text-align: center;">Test</p>-->
+
+                <div>
+
+
+                  <mdb-card style="border-radius: 10px;">
+
+                    <mdb-card-header class="white-text text-center py-4" style="background-color: rgba(0, 69, 125, 1)">
+                      <h5>
+                        <strong>BINMAK SOFTWARE SYSTEM |
+                          SIGN IN</strong>
+                      </h5>
+                    </mdb-card-header>
+                  
+                    <br>
+                    <br>
+                  
+                    <!--Card content-->
+                    <mdb-card-body class="px-lg-5 pt-0">
+
+
+                  <form [formGroup]="form">
+
+
+                    <div class="md-form">
+                      <input mdbInput formControlName="Email" type="email" id="email" class="form-control">
+                      <label for="email">Email</label>
+                    </div>
+
+
+
+                    <div class="md-form">
+                      <input mdbInput formControlName="Password" type="password" id="password" class="form-control">
+                      <label for="password">Password</label>
+                    </div>
+
+                    <button *ngIf="!loading" [disabled]="!form.valid" (click)="login()"
+                      class="btn btn-outline btn-rounded btn-block my-4 waves-effect z-depth-0"
+                      style="background-color:rgba(0, 69, 125, 1);font-weight: bold"><span style="color: white;">Sign
+                        in</span>
+                    </button>
+
+                    <button (click)="register()" id="registerBtnAlign"
+                      class="btn btn-outline btn-rounded btn-outline btn-block my-4 waves-effect z-depth-0"
+                      style="background-color:rgb(67, 106, 138);font-weight: bold"><span
+                        style="color: white;">Register</span>
+                    </button>
+
+                    <p (click)="forgotPassword()"
+                      style="cursor: pointer; text-align: left; color: rgba(0, 69, 125, 1); font-weight: bold; text-align: center;"
+                      *ngIf="!loading">Forgot Password</p>
+                    <br>
+                    <div *ngIf="loading" style="text-align: center;">
+                      <div class="preloader-wrapper big active crazy">
+                        <div class="spinner-layer spinner-blue-only">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="gap-patch">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                  </form>
+
+                </mdb-card-body>
+                  
+              </mdb-card>
+
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,314 @@
+<div class="container-div" style="padding: 30px">
+    <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="back()"
+    style="background-color: rgba(0, 69, 125, 1) !important; color: white;"> <i class="fa fa-arrow-left"></i> BACK</button>
+    <br>
+
+<h5 style="text-align: center;">MY ASSET NODES</h5>
+<br>
+
+<div class="row">
+<div class="col-md-4" *ngIf="!tree">
+  <mdb-tree (checked)="clickTree($event)" 
+        [expandAll]="true" 
+        [checkboxes]="true" 
+        textField="name"
+        childrenField="children" 
+        checkboxesField="checked" 
+        [toggleOnTitleClick]="true" 
+        [nodes]="data">
+  </mdb-tree>
+
+</div>
+<div class="col-md-8">
+  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+      <thead>
+          <tr>
+              <th>Root Parent</th>
+              <th>Parent</th>
+              <th>Name</th>
+              <th>Code</th>
+              <th>Node Type</th>
+              <th>View</th>
+              <th>P. F. Charts</th>
+              <th>P. F. Readings</th>
+              <th>P. F. Parent Charts</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let node of data1" style="cursor: pointer;">
+              <td>{{node.root}}</td>
+              <td>{{node.parent}}</td>
+              <td>{{node.name}}</td>
+              <td>{{node.code}}</td>
+              <td>{{node.assetNodeType}}</td>
+
+              <td>
+                  <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="viewNode(node)"
+                  style="background-color: rgb(104, 128, 148) !important; color: white;"> <i class="far fa-eye"></i>
+                  </button>
+              </td>
+
+              <td>
+                  <div *ngIf="node.assetNodeTypeId == 2">
+                      <button type="button" *ngIf="node.isProductionFlow" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="accessCharts(node)"
+                      style="background-color: rgba(0, 69, 125, 1) !important; color: white;"
+                      > <i class="fa fa-chart-line"></i>
+                      </button>
+                      <button type="button" *ngIf="!node.isProductionFlow" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="accessCharts(node)" [disabled]="true"
+                      style="background-color: rgba(0, 69, 125, 1) !important; color: white;"
+                      > <i class="fa fa-chart-line"></i>
+                      </button>
+                  </div>
+
+              <div *ngIf="node.assetNodeTypeId == 1 || node.assetNodeTypeId == 3">
+                  <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect 
+                  style="background-color: white !important; color: white;"> <i class="fa fa-times"></i>
+                  </button>
+              </div>
+
+              </td>
+
+              <td>
+                <div *ngIf="node.assetNodeTypeId == 2">
+                    <button type="button" *ngIf="node.isProductionFlow" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="newAccessReadings(node)"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;"
+                    > <i class="fa fa-calculator"></i>
+                    </button>
+                    <button type="button" *ngIf="!node.isProductionFlow" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="newAccessReadings(node)" [disabled]="true"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;"
+                    > <i class="fa fa-calculator"></i>
+                    </button>
+                </div>
+
+            <div *ngIf="node.assetNodeTypeId == 1 || node.assetNodeTypeId == 3">
+                <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect 
+                style="background-color: white !important; color: white;"> <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            </td>
+
+            <td>
+              <div *ngIf="node.assetNodeTypeId == 2">
+                  <button type="button" *ngIf="node.isProductionFlow" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="accessParentCharts(node)"
+                  style="background-color: rgba(0, 69, 125, 1) !important; color: white;"
+                  > <i class="fa fa-chart-pie"></i>
+                  </button>
+                  <button type="button" *ngIf="!node.isProductionFlow" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="accessParentCharts(node)" [disabled]="true"
+                  style="background-color: rgba(0, 69, 125, 1) !important; color: white;"
+                  > <i class="fa fa-chart-pie"></i>
+                  </button>
+              </div>
+
+          <div *ngIf="node.assetNodeTypeId == 1 || node.assetNodeTypeId == 3">
+              <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect 
+              style="background-color: white !important; color: white;"> <i class="fa fa-times"></i>
+              </button>
+          </div>
+
+          </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+</div>
+<!--View Asset Node-->
+<div mdbModal #viewAssetNodeModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 style="text-align: center;">Asset Node</h4>
+
+                <button type="button" class="close pull-right" aria-label="Close" (click)="viewAssetNodeModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h6 style="text-align: center;">Asset Node: {{Name}}</h6>
+                        <br>
+                        <form [formGroup]="editAssetNodeForm">
+
+                            <div class="row">
+
+                                <div *ngIf="AssetNodeTypeId==1" class="col-md-5 col-lg-5 col-sm-12 col-xs-12" >
+                                    <div class="md-form">
+                                        <mdb-select [options]="organizations" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="ParentOrganazationId"
+                                            label="Parent Organization, If Exist" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div *ngIf="AssetNodeTypeId==2" class="col-md-5 col-lg-5 col-sm-12 col-xs-12" >
+                                    <div class="md-form">
+                                        <mdb-select [options]="productiveUnits" [filterEnabled]="true"
+                                            [multiple]="false" [highlightFirst]="false" formControlName="OrganazationId"
+                                            label="* Select Organization/Parent Productive Unit"
+                                            [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div *ngIf="AssetNodeTypeId==3" class="col-md-5 col-lg-5 col-sm-12 col-xs-12" >
+                                    <div class="md-form">
+                                        <mdb-select [options]="equipments" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="EquipmentId"
+                                            label="* Select Productive Unit/Parent Equipment" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="CompanyName" type="text" id="CompanyName"
+                                            class="form-control" readonly>
+                                        <label for="CompanyName" class=""><span style="color: red;">*</span>
+                                            Organization Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="CompanyCode" type="text" id="CompanyCode"
+                                            class="form-control" readonly>
+                                        <label for="CompanyCode" class=""><span style="color: red;">*</span>
+                                            Organization Code</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="countries" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="CountryId"
+                                            label="* Select Country" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address" type="text" id="Address"
+                                            class="form-control" readonly>
+                                        <label for="Address" class=""><span style="color: red;">*</span> Address, 1st
+                                            Floor South Block</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address2" type="text" id="Address2"
+                                            class="form-control" readonly>
+                                        <label for="Address2" class="">Borrowdale Office Park</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="City" type="text" id="City"
+                                            class="form-control" readonly>
+                                        <label for="City" class=""><span style="color: red;">*</span> City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Zip" type="number" id="Zip"
+                                            class="form-control" readonly>
+                                        <label for="Zip" class=""><span style="color: red;">*</span> Zip</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                    (click)="viewAssetNodeModal.hide()"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                        class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--View Asset Node Tree-->
+<div mdbModal #viewTreeNodeModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 style="text-align: center;">Asset Node: Tree</h4>
+
+                <button type="button" class="close pull-right" aria-label="Close" (click)="viewAssetNodeModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h6 style="text-align: center;">Asset Node: <span style="color: red;">{{name}} : {{code}}</span> </h6>
+                        <br>
+                        <hr style="border: 1px solid rgb(228, 225, 225);">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <h6 style="text-align: center;">Asset Node Type: {{assetNodeType}}</h6>
+                        <h6 style="text-align: center;">City: {{city}}</h6>
+                        <h6 style="text-align: center;">Parent: {{parent}}</h6>
+                        <h6 style="text-align: center;">Root: {{root}}</h6>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                (click)="viewNodeTree(nodeTreeId)"
+                style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                    class="fa fa-eye" aria-hidden="true"></i> View</button>
+
+              
+
+                <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                    (click)="viewTreeNodeModal.hide()"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                        class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+</div>
+

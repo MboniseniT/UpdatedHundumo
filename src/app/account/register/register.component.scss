@@ -1,0 +1,18 @@
+#login-side-image{
+    background-image: url('./../../../assets/b.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media (max-width: 767px) {                  
+    #loginBtn {
+       display: none;
+    }
+ }
+
+ @media (min-width: 767px) {                  
+    #loginBtnAlign {
+       display: none;
+    }
+ }
+

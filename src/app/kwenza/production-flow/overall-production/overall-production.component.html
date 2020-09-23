@@ -1,0 +1,156 @@
+<div>
+    <button type="button" class="btn btn-info waves-light" aria-label="Close" mdbWavesEffect (click)="back()" style="background-color: rgba(0, 69, 125, 1); color: white;"> <i
+        class="fa fa-arrow-left"></i> BACK</button>
+        <br>
+        <div *ngIf="loading" style="text-align: center;">
+            <div class="preloader-wrapper big active crazy">
+              <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                  <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+    <div *ngIf="!loading">
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <div class="table-responsive" style="margin: 0;">
+                    <table class="table table-bordered" style="margin: 0 !important;">
+                        <!--<th colspan="3">ZIMPLATS MUPFUTI</th>-->
+                        <tr>
+
+                            <td style="padding: 0; margin: 0;">
+                                <table class="table table-bordered" style="margin: 0 !important;">
+                                    <tr>
+                                        
+                                        <td>
+                                            <table class="table table-bordered" style="margin: 0 !important;">
+                                                <tr>
+                                                    
+                                                    <td style="padding: 0 !important;">
+                                                        <table class="table table-bordered"
+                                                            style="margin: 0 !important;">
+                                                            <th colspan="12"
+                                                                style="text-align: center; margin: 0; padding: 0;"
+                                                                *ngFor="let f of FunctionUnits"><span style="font-weight: bold; font-family: Verdana, Geneva, Tahoma, sans-serif;">{{f.siteName}}</span> 
+                                                                <table class="table table-bordered"
+                                                                    style="padding:0; margin: 0 !important;">
+                                                                    <th colspan="12"
+                                                                        style="text-align: center; padding: 0; margin: 0; font-size: smaller; font-weight: 100; min-width: 245px;"
+                                                                        *ngFor="let fu of f.functionUnitObjects">
+                                                                        <span style="font-weight: bold;">{{fu.functionUnit}}</span> 
+                                                                        <table class="table table-bordered"
+                                                                            style="padding:0; margin: 0 !important;">
+                                                                            <tr>
+                                                                                <td colspan="12"
+                                                                                    style="text-align: center; margin: 0; padding: 0 !important;font-size: smaller; color: blue; font-weight: 100; min-width: 220px;"
+                                                                                    *ngFor="let fuv of fu.functionChildren">
+                                                                                    {{fuv.measurementUnit}}
+                                                                                </td>
+                                                                            </tr>
+                                                                            <th colspan="12"
+                                                                                [ngStyle]="{'background-color': fui.functionChildrenBachgroundColor, 'color': fui.functionChildrenColor}" 
+                                                                                style="text-align: center; margin: 0; padding: 0 !important;font-size: smaller; font-weight: bold; min-width: 220px;"
+                                                                                
+                                                                                *ngFor="let fui of fu.functionChildren">
+                                                                                {{fui.functionUnitChildrenName}}
+
+                                                                            </th>
+
+                                                                            <tr>
+                                                                                <td colspan="12"
+                                                                                    style="text-align: center; margin: 0; color: blue; padding: 0 !important;font-size: smaller; font-weight: bold; min-width: 220px;"
+                                                                                    *ngFor="let fuv of fu.functionChildren">
+                                                                                    {{fuv.frequency}}
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td colspan="12" [ngStyle]="{'background-color': fuv.monthlyTargetIsBackground  ? fuv.monthlyTargetColor : 'none'}"
+                                                                                    style="text-align: center; margin: 0; color: blue; padding: 0 !important;font-size: smaller; font-weight: bold; min-width: 220px;"
+                                                                                    *ngFor="let fuv of fu.functionChildren">
+                                                                                    <span *ngIf="!fuv.monthlyTargetIsBackground" style="padding: 1px 7px; border-radius: 100%;"
+                                                                                    [ngStyle]="{'background-color': fuv.monthlyTargetColor}"></span>
+                                                                                    <span *ngIf="!fuv.monthlyTargetIsBackground">&nbsp; &nbsp;</span>{{fuv.monthlyTarget}}
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td colspan="12" [ngStyle]="{'background-color': fuv.targetIsBackground  ? fuv.targetColor : 'none'}"
+                                                                                    style="text-align: center; margin: 0; color: blue; padding: 0 !important;font-size: smaller; font-weight: bold; min-width: 220px;"
+                                                                                    *ngFor="let fuv of fu.functionChildren">
+                                                                                    <span *ngIf="!fuv.targetIsBackground" style="padding: 1px 7px; border-radius: 100%;"
+                                                                                    [ngStyle]="{'background-color': fuv.targetColor}"></span>
+                                                                                    <span *ngIf="!fuv.targetIsBackground">&nbsp; &nbsp;</span>{{fuv.target}}
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td colspan="12" [ngStyle]="{'background-color': fuv.budgetIsBackground  ? fuv.budgetColor : 'none'}"
+                                                                                    style="text-align: center; margin: 0; color: blue; padding: 0 !important;font-size: smaller; font-weight: bold; min-width: 220px;"
+                                                                                    *ngFor="let fuv of fu.functionChildren">
+                                                                                    <span *ngIf="!fuv.budgetIsBackground" style="padding: 1px 7px; border-radius: 100%;"
+                                                                                    [ngStyle]="{'background-color': fuv.budgetColor}"></span>
+                                                                                    <span *ngIf="!fuv.budgetIsBackground">&nbsp; &nbsp;</span>{{fuv.budget}}
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td colspan="12" colspan="12" [ngStyle]="{'background-color': fuv.thresholdIsBackground ? fuv.thresholdColor : 'none'}"
+                                                                                    style="text-align: center; margin: 0; color: blue; padding: 0 !important;font-size: smaller; font-weight: bold; min-width: 220px;"
+                                                                                    *ngFor="let fuv of fu.functionChildren">
+
+                                                                                    <span *ngIf="!fuv.thresholdIsBackground" style="padding: 1px 7px; border-radius: 100%;"
+                                                                                    [ngStyle]="{'background-color': fuv.thresholdColor}"></span>
+                                                                                    
+                                                                                    <span *ngIf="!fuv.thresholdIsBackground">&nbsp; &nbsp;</span>{{fuv.threshold}}
+
+                                                                                </td>
+                                                                            </tr>
+                                                                            
+
+                                                                            <tr *ngFor="let index of fu.functionUnitValues">
+                                                                                <td colspan="12" [ngStyle]="{'background-color': fuv.isBackground ? fuv.color : 'none'}"
+                                                                                    style="text-align: center; margin: 0; color: blue;  padding: 0 !important;font-size: smaller; font-weight: bold; min-width: 155px;"
+                                                                                    *ngFor="let fuv of index.readingsObject">
+
+                                                                                    <span *ngIf="!fuv.isBackground" style="padding: 1px 7px; border-radius: 100%;"
+                                                                                    [ngStyle]="{'background-color': fuv.color}" ></span>
+
+                                                                                    <span *ngIf="!fuv.isBackground">&nbsp; &nbsp;</span>
+                                                                                    
+                                                                                    {{fuv.value}}
+                                                                                </td>
+                                                                            </tr>
+
+                                                                        </table>
+                                                                    </th>
+
+                                                                </table>
+                                                            </th>
+
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

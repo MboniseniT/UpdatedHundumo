@@ -1,0 +1,217 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="back()"
+            style="background-color: rgba(0, 69, 125, 1)!important; color: white;"> <i class="fa fa-arrow-left"></i>
+            BACK</button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="overallProduction()"
+            style="background-color: rgba(0, 69, 125, 1)!important; color: white; float: right;"> <i class="fa fa-sitemap"></i>
+            OVERALL PRODUCTION</button>
+        </div>
+    </div>
+
+<br>
+    <br>
+    <div style="border: 1px dashed red;">
+        <form class="text-center" style="color: #757575;" [formGroup]="dateForm">
+            <div class="form-row">
+                <div class="col">
+                    <mdb-date-picker name="SelectedDate" [placeholder]="'Select Date To Set Target'"
+                        formControlName="SelectedDate" required></mdb-date-picker>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-info waves-light"
+                        style="float: right; background-color: rgba(0, 69, 125, 1) !important; color: white;"
+                        aria-label="Close" mdbWavesEffect (click)="saveProductionDate()"> <i class="fa fa-calendar"></i>
+                        LOAD PRODUCTION STAT FOR THE MONTH</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
+</div>
+
+<div class="container-master-table" style="padding: 35px;">
+
+    <div class="table-responsive" style="margin: 0;">
+        <table class="table table-bordered" style="margin: 0 !important;">
+
+            <tr>
+                <td style="padding:0; margin: 0 !important; min-width: 120px; max-width: 220px;">
+                    <table class="table table-bordered"
+                        style="padding:0; margin: 0 !important; background-color: white;">
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td>Processes</td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td>KPA Type</td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td>KPA</td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td>Frequency</td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td>Target</td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td>Budget</td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td>Threshold</td>
+                        </tr>
+
+                        <tr *ngFor="let d of prodFlowDates"
+                            style="padding:0; margin: 0 !important; color: blue; font-weight:500">
+                            <td>{{d}}</td>
+                        </tr>
+
+
+                    </table>
+                </td>
+
+                <td *ngFor="let p of prodFlowDatastructure" [ngStyle]="{'background-color': p.process.backgroundColor}" style="width: 220px">
+                    <span [ngStyle]="{'color': p.process.color}"
+                        style="font-weight: bold;">{{p.process.processName}}</span>
+
+                    <table class="table table-bordered"
+                        style="padding:0; margin: 0 !important; background-color: white;">
+                        <tr style="padding:0; margin: 0 !important;">
+
+                            <td *ngFor="let kpa of p.keyProcessAreas"
+                                style="padding:0; margin: 0 !important; min-width: 155px;">
+                                <span style="color: blue; font-size: small;">{{kpa.kpaType}}</span></td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important;">
+
+                            <td *ngFor="let kpa of p.keyProcessAreas"
+                                [ngStyle]="{'background-color': kpa.backgroundColor}"
+                                style="padding:0; margin: 0 !important; min-width: 155px;">
+                                <span [ngStyle]="{'color': kpa.color}"
+                                    style="font-weight: bold;">{{kpa.keyProcessAreaName}}</span></td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important;">
+
+                            <td *ngFor="let kpa of p.keyProcessAreas"
+                                style="padding:0; margin: 0 !important; min-width: 155px; text-align: center;">
+                                <span style="color: blue;">{{kpa.frequency}}</span></td>
+                        </tr>
+
+                        <tr style="padding:0; margin: 0 !important;">
+
+                            <td  *ngFor="let kpa of p.keyProcessAreas" 
+                            [ngStyle]="{'background-color': kpa.isBuffer ? 'limegreen' : 'none'}"
+                                style="padding:0; margin: 0 !important; width: 220px !important; text-align: center;">
+
+                                <span *ngIf="!kpa.isBuffer" style="padding: 1px 11px; border-radius: 100%; background-color: limegreen;"></span>
+
+                                <span style="color: blue; font-weight: bold;">
+                                    {{kpa.targetValue}}
+                                </span>
+
+                                </td>
+
+                        </tr>
+
+
+
+                        <tr style="padding:0; margin: 0 !important;">
+
+                            <td  *ngFor="let kpa of p.keyProcessAreas" 
+                            [ngStyle]="{'background-color': kpa.isBuffer ? 'orange' : 'none'}"
+                                style="padding:0; margin: 0 !important; width: 220px !important; text-align: center;">
+
+                                <span *ngIf="!kpa.isBuffer" style="padding: 1px 11px; border-radius: 100%; background-color: orange;"></span>
+
+                                <span style="color: blue; font-weight: bold;">
+                                    {{kpa.targetBudget}}
+                                </span>
+
+                                </td>
+
+                        </tr>
+
+                        <tr style="padding:0; margin: 0 !important;">
+
+                            <td  *ngFor="let kpa of p.keyProcessAreas" 
+                            [ngStyle]="{'background-color': kpa.isBuffer ? 'red' : 'none'}"
+                                style="padding:0; margin: 0 !important; width: 220px !important; text-align: center;">
+
+                                <span *ngIf="!kpa.isBuffer" style="padding: 1px 11px; border-radius: 100%; background-color: red;"></span>
+
+                                <span style="color: blue; font-weight: bold;">
+                                    {{kpa.targetThreshold}}
+                                </span>
+
+                                </td>
+
+                        </tr>
+
+                        <tr style="padding:0; margin: 0 !important; font-weight: bold;">
+
+                            <td *ngFor="let kpa of p.keyProcessAreas" style="padding:0; margin: 0;">
+                            <tr *ngFor="let r of kpa.productions" style="padding:0; margin: 0 !important;">
+
+                                <td *ngIf="r.isProcess" style="padding:0; margin: 0; min-width: 300px; text-align: center;">
+                                    <span style="padding: 1px 11px; border-radius: 100%;"
+                                    [ngStyle]="{'background-color': r.flagColor}"></span>
+                                    <span style="color: blue; font-weight: bold;">{{ r.value}}</span>
+                                </td>
+
+                                <td *ngIf="r.isBuffer" style="padding:0; margin: 0; min-width: 300px; text-align: center;" [ngStyle]="{'background-color': r.flagColor}">
+                                    <span style="color: blue; font-weight: bold;">{{ r.value}}</span>
+                                </td>
+
+                            </tr>
+                </td>
+
+            </tr>
+
+        </table>
+
+                </td>
+
+                <td style="padding:0; margin: 0 !important; min-width: 120px; max-width: 220px;" >
+                    <table class="table table-bordered"
+                        style="padding:0; margin: 0 !important; background-color: white;">
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td>Action</td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td><br></td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td><br></td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td><br></td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td><br></td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td><br></td>
+                        </tr>
+                        <tr style="padding:0; margin: 0 !important; color: blue; font-weight:bold">
+                            <td><br></td>
+                        </tr>
+
+                        <tr *ngFor="let d of prodFlowDates"
+                            style="padding:0; margin: 0 !important; color: blue; font-weight:500">
+                            <td style="text-align: center;" >
+                                <a (click)="editReading(d)"><i class="fa fa-edit" style="background-color: red; color: white;"></i>Update</a>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>

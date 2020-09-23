@@ -1,0 +1,1053 @@
+<div class="container-dev" style="padding: 10px; margin: 10px;">
+    <br>
+    <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="back()"
+        style="background-color: rgb(41, 40, 40) !important; color: white;"> <i class="fa fa-arrow-left"></i>
+        BACK</button>
+
+    <h5 style="text-align: center;">ASSET SETUP</h5>
+    <br>
+    <div>
+        <div class="form-row">
+
+            <div class="col">
+                <button type="button" class="btn btn-info waves-light" style="float: right;" aria-label="Close"
+                    mdbWavesEffect (click)="organization()"
+                    style="background-color: rgba(0, 69, 125, 1)!important; color: white;">
+                    <i class="fa fa-building"></i> Organization</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-info waves-light" style="float: right;" aria-label="Close"
+                    mdbWavesEffect (click)="openProductiveUnit()"
+                    style="background-color: rgba(0, 69, 125, 1)!important; color: white;">
+                    <i class="fa fa-industry"></i> Productive Unit</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-info waves-light" style="float: right;" aria-label="Close"
+                    mdbWavesEffect (click)="equipment()"
+                    style="background-color: rgba(0, 69, 125, 1)!important; color: white;">
+                    <i class="fab fa-whmcs"></i> New Equipment</button>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-4" *ngIf="tree">
+            <div style="text-align: center;">
+                <div class="preloader-wrapper small active crazy">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4" *ngIf="!tree">
+            <mdb-tree (checked)="onCheck($event)" [expandAll]="true" [checkboxes]="true" textField="name"
+                childrenField="children" checkboxesField="checked" [toggleOnTitleClick]="true"
+                (nodesChanged)="onNodesChanged($event)" [nodes]="data">
+            </mdb-tree>
+
+        </div>
+        <div class="col-md-8">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                <thead>
+                    <tr>
+                        <th>Root Parent</th>
+                        <th>Parent</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Node Type</th>
+
+
+                        <th>Edit</th>
+                        <th>View</th>
+                        <th>Delete</th>
+                        <th>P.F</th>
+                        <th>P.F Config</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let node of data1" style="cursor: pointer;">
+                        <td>{{node.root}}</td>
+                        <td>{{node.parent}}</td>
+                        <td>{{node.name}}</td>
+                        <td>{{node.code}}</td>
+                        <td>{{node.assetNodeType}}</td>
+
+
+                        <td>
+                            <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                                (click)="editNode(node)"
+                                style="background-color: rgba(0, 69, 125, 1) !important; color: white;"> <i
+                                    class="far fa-edit"></i>
+                            </button>
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                                (click)="viewNode(node)"
+                                style="background-color: rgb(104, 128, 148) !important; color: white;"> <i
+                                    class="far fa-eye"></i>
+                            </button>
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                                (click)="deleteNode(node)" style="background-color: red !important; color: white;"> <i
+                                    class="fa fa-trash"></i>
+                            </button>
+                        </td>
+
+                        <td>
+                            <div *ngIf="node.assetNodeTypeId == 2">
+                                <button type="button" *ngIf="node.isProductionFlow" class="btn btn-info"
+                                    aria-label="Close" mdbWavesEffect (click)="notProductionFlow(node)"
+                                    style="background-color: red !important; color: white;"> <i
+                                        class="fa fa-undo"></i>
+                                </button>
+                                <button type="button" *ngIf="!node.isProductionFlow" class="btn btn-info"
+                                    aria-label="Close" mdbWavesEffect (click)="productionFlow(node)"
+                                    style="background-color:green !important; color: white;"> <i
+                                        class="fa fa-cogs"></i>
+                                </button>
+                            </div>
+
+                            <div *ngIf="node.assetNodeTypeId == 1 || node.assetNodeTypeId == 3">
+                                <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                                    (click)="assetSettingsWarning()"
+                                    style="background-color: orange !important; color: white;"> <i
+                                        class="fa fa-times"></i>
+                                </button>
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <button *ngIf="node.isProductionFlow" type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                                (click)="prodFlowConfig(node)" style="background-color: grey !important; color: white;"> <i
+                                    class="fa fa-cog"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+<!--Organization-->
+<div mdbModal #organizationModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 style="text-align: center;">Add New Organization</h4>
+
+                <button type="button" class="close pull-right" aria-label="Close" (click)="organizationModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h6 style="text-align: center;">Create New Organization</h6>
+                        <br>
+                        <form [formGroup]="formOrganization">
+
+                            <div class="row">
+
+                                <div class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="organizations" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="ParentOrganazationId"
+                                            label="Parent Organization, If Exist" [enableSelectAll]="false" (ngModelChange)="onChangeOrganization($event)">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="CompanyName" type="text" id="CompanyName"
+                                            class="form-control" (ngModelChange)="onChangeTogler($event)">
+                                        <label for="CompanyName" class=""><span style="color: red;">*</span>
+                                            Organization Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="CompanyCode" type="text" id="CompanyCode"
+                                            class="form-control">
+                                        <label for="CompanyCode" class=""><span style="color: red;">*</span>
+                                            Organization Code</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row" *ngIf="sameAddressTogglerFlag">
+                                <div style="padding: 15px;">
+                                    <mdb-checkbox (click)="sameAddressToggler()">Is Address Same as Parent Organization?
+                                    </mdb-checkbox>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!sameAddress">
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="countries" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="CountryId"
+                                            label="* Select Country" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address" type="text" id="Address"
+                                            class="form-control">
+                                        <label for="Address" class=""><span style="color: red;">*</span> Address, 1st
+                                            Floor South Block</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address2" type="text" id="Address2"
+                                            class="form-control">
+                                        <label for="Address2" class="">Borrowdale Office Park</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!sameAddress">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="City" type="text" id="City"
+                                            class="form-control">
+                                        <label for="City" class=""><span style="color: red;">*</span> City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Zip" type="text" id="Zip"
+                                            class="form-control">
+                                        <label for="Zip" class=""><span style="color: red;">*</span> Zip</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info waves-light"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect
+                    (click)="saveOrganization()" [disabled]="!formOrganization.valid">
+                    <i class="fa fa-building" aria-hidden="true"></i>
+                    Add Organization</button>
+                <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                    (click)="organizationModal.hide()"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                        class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--View Asset Node-->
+<div mdbModal #viewAssetNodeModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 style="text-align: center;">Asset Node</h4>
+
+                <button type="button" class="close pull-right" aria-label="Close" (click)="viewAssetNodeModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h6 style="text-align: center;">Asset Node: {{Name}}</h6>
+                        <br>
+                        <form [formGroup]="editAssetNodeForm">
+
+                            <div class="row">
+
+                                <div *ngIf="AssetNodeTypeId==1" class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="organizations" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="ParentOrganazationId"
+                                            label="Parent Organization, If Exist" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div *ngIf="AssetNodeTypeId==2" class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="productiveUnits" [filterEnabled]="true"
+                                            [multiple]="false" [highlightFirst]="false" formControlName="OrganazationId"
+                                            label="* Parent Asset Node" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div *ngIf="AssetNodeTypeId==3" class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="equipments" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="EquipmentId"
+                                            label="* Select Productive Unit/Parent Equipment" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="CompanyName" type="text" id="CompanyName"
+                                            class="form-control" readonly>
+                                        <label for="CompanyName" class=""><span style="color: red;">*</span>
+                                            Organization Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="CompanyCode" type="text" id="CompanyCode"
+                                            class="form-control" readonly>
+                                        <label for="CompanyCode" class=""><span style="color: red;">*</span>
+                                            Organization Code</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="countries" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="CountryId"
+                                            label="* Select Country" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address" type="text" id="Address"
+                                            class="form-control" readonly>
+                                        <label for="Address" class=""><span style="color: red;">*</span> Address, 1st
+                                            Floor South Block</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address2" type="text" id="Address2"
+                                            class="form-control" readonly>
+                                        <label for="Address2" class="">Borrowdale Office Park</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="City" type="text" id="City"
+                                            class="form-control" readonly>
+                                        <label for="City" class=""><span style="color: red;">*</span> City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Zip" type="text" id="Zip"
+                                            class="form-control" readonly>
+                                        <label for="Zip" class=""><span style="color: red;">*</span> Zip</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                    (click)="viewAssetNodeModal.hide()"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                        class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--Edit Asset Node-->
+<div mdbModal #editAssetNodeModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 style="text-align: center;">Update Asset Node</h4>
+
+                <button type="button" class="close pull-right" aria-label="Close" (click)="editAssetNodeModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h6 style="text-align: center;">Asset Node: {{Name}}</h6>
+                        <br>
+                        <form [formGroup]="editAssetNodeForm">
+
+                            <div class="row">
+
+                                <div *ngIf="AssetNodeTypeId==1" class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="organizations" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="ParentOrganazationId"
+                                            label="Parent Asset Node, If Exist" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div *ngIf="AssetNodeTypeId==2" class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="productiveUnits" [filterEnabled]="true"
+                                            [multiple]="false" [highlightFirst]="false" formControlName="OrganazationId"
+                                            label="* Select Parent Asset Node" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div *ngIf="AssetNodeTypeId==3" class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="equipments" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="EquipmentId"
+                                            label="* Select Parent Asset Node" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="CompanyName" type="text" id="CompanyName"
+                                            class="form-control">
+                                        <label for="CompanyName" class=""><span style="color: red;">*</span>
+                                            Asset Node Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="CompanyCode" type="text" id="CompanyCode"
+                                            class="form-control" readonly>
+                                        <label for="CompanyCode" class=""><span style="color: red;">*</span>
+                                            Asset Node Code</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="countries" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="CountryId"
+                                            label="* Select Country" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address" type="text" id="Address"
+                                            class="form-control">
+                                        <label for="Address" class=""><span style="color: red;">*</span> Address, 1st
+                                            Floor South Block</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address2" type="text" id="Address2"
+                                            class="form-control">
+                                        <label for="Address2" class="">Borrowdale Office Park</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="City" type="text" id="City"
+                                            class="form-control">
+                                        <label for="City" class=""><span style="color: red;">*</span> City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Zip" type="text" id="Zip"
+                                            class="form-control">
+                                        <label for="Zip" class=""><span style="color: red;">*</span> Zip</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info waves-light"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect
+                    (click)="editAssetNode()" [disabled]="!editAssetNodeForm.valid">
+                    <i class="far fa-edit" aria-hidden="true"></i>
+                    Update Asset Node</button>
+                <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                    (click)="editAssetNodeModal.hide()"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                        class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--Productive Unit-->
+<div mdbModal #productiveUnitModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 style="text-align: center;">Add New Productive Unit</h4>
+
+                <button type="button" class="close pull-right" aria-label="Close" (click)="productiveUnitModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h6 style="text-align: center;">Create New Productive Unit</h6>
+                        <br>
+                        <form [formGroup]="formProductiveUnit">
+
+                            <div class="row">
+
+                                <div class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="productiveUnits" [filterEnabled]="true"
+                                            [multiple]="false" [highlightFirst]="false" formControlName="OrganazationId"
+                                            label="* Select Organization/Parent Productive Unit"
+                                            [enableSelectAll]="false" (ngModelChange)="onChangeProductiveUnit($event)">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="ProductiveUnitName" type="text"
+                                            id="ProductiveUnitName" class="form-control"
+                                            (ngModelChange)="onChangePUTogler($event)">
+                                        <label for="ProductiveUnitName" class=""><span style="color: red;">*</span>
+                                            Productive Unit Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="ProductiveUnitCode" type="text"
+                                            id="ProductiveUnitCode" class="form-control">
+                                        <label for="ProductiveUnitCode" class=""><span style="color: red;">*</span>
+                                            Productive Unit Code</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row" *ngIf="sameAddressTogglerPUFlag">
+                                <div style="padding: 15px;">
+                                    <mdb-checkbox (click)="sameAddressPUToggler()">Is Address Same as
+                                        Parent/Organization?
+                                    </mdb-checkbox>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!sameAddressPU">
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="countries" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="CountryId"
+                                            label="* Select Country" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address" type="text" id="Address"
+                                            class="form-control">
+                                        <label for="Address" class=""><span style="color: red;">*</span> Address, 1st
+                                            Floor South Block</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address2" type="text" id="Address2"
+                                            class="form-control">
+                                        <label for="Address2" class="">Borrowdale Office Park</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!sameAddressPU">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="City" type="text" id="City"
+                                            class="form-control">
+                                        <label for="City" class=""><span style="color: red;">*</span> City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Zip" type="text" id="Zip"
+                                            class="form-control">
+                                        <label for="Zip" class=""><span style="color: red;">*</span> Zip</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+                <!--<div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h6 style="text-align: center;">Create New Productive Unit</h6>
+                        <br>
+                        <form [formGroup]="formProductiveUnit">
+
+                            <div class="row">
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="organizations" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="OrganazationId"
+                                            label="* Select Organization" [enableSelectAll]="false"
+                                            (ngModelChange)="onChange($event)">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12" *ngIf="isProductiveUnit">
+                                    <div class="md-form">
+                                        <mdb-select [options]="productiveUnits" [filterEnabled]="true"
+                                            [multiple]="false" [highlightFirst]="false"
+                                            formControlName="ParentProductiveId" label="Select Parent Productive Unit"
+                                            [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="ProductiveUnitName" type="text"
+                                            id="ProductiveUnit" class="form-control">
+                                        <label for="ProductiveUnitName" class=""><span style="color: red;">*</span>
+                                            Productive Unit Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="ProductiveUnitCode" type="text"
+                                            id="ProductiveUnitCode" class="form-control">
+                                        <label for="ProductiveUnitCode" class=""><span style="color: red;">*</span>
+                                            Productive Unit Code</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div style="padding: 15px;">
+                                    <mdb-checkbox (click)="sameAddressTogglerPU()">Is Address Same as Parent Productive Unit?</mdb-checkbox>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!sameAddress">
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="countries" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="CountryId"
+                                            label="* Select Country" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address" type="text" id="Address"
+                                            class="form-control">
+                                        <label for="Address" class=""><span style="color: red;">*</span> Address, 1st
+                                            Floor South Block</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address2" type="text" id="Address2"
+                                            class="form-control">
+                                        <label for="Address2" class="">Borrowdale Office Park</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!sameAddress">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="City" type="text" id="City"
+                                            class="form-control">
+                                        <label for="City" class=""><span style="color: red;">*</span> City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Zip" type="number" id="Zip"
+                                            class="form-control">
+                                        <label for="Zip" class=""><span style="color: red;">*</span> Zip</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>-->
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info waves-light"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect
+                    (click)="saveProductiveUnit()" [disabled]="!formProductiveUnit.valid">
+                    <i class="fa fa-building" aria-hidden="true"></i>
+                    Add Productive Unit</button>
+                <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                    (click)="productiveUnitModal.hide()"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                        class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--Equipment-->
+<div mdbModal #equipmentModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 style="text-align: center;">Add New Equipment</h4>
+
+                <button type="button" class="close pull-right" aria-label="Close" (click)="equipmentModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h6 style="text-align: center;">Create New Equipment</h6>
+                        <br>
+                        <form [formGroup]="formEquiment">
+
+                            <div class="row">
+
+                                <div class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="equipments" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="EquipmentId"
+                                            label="* Select Productive Unit/Parent Equipment" [enableSelectAll]="false" (ngModelChange)="onChangeEquipment($event)">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="EquipmentName" type="text" id="EquipmentName"
+                                            class="form-control" (ngModelChange)="onChangeETogler($event)">
+                                        <label for="EquipmentName" class=""><span style="color: red;">*</span>
+                                            Equipment Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="EquipmentCode" type="text" id="EquipmentCode"
+                                            class="form-control">
+                                        <label for="EquipmentCode" class=""><span style="color: red;">*</span>
+                                            Equipment Code</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row" *ngIf="sameAddressTogglerEFlag">
+                                <div style="padding: 15px;">
+                                    <mdb-checkbox (click)="sameAddressEquipmentoggler()">Is Address Same as
+                                        Parent/Productive Unit?
+                                    </mdb-checkbox>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!sameAddressEquipment">
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="countries" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="CountryId"
+                                            label="* Select Country" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address" type="text" id="Address"
+                                            class="form-control">
+                                        <label for="Address" class=""><span style="color: red;">*</span> Address, 1st
+                                            Floor South Block</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address2" type="text" id="Address2"
+                                            class="form-control">
+                                        <label for="Address2" class="">Borrowdale Office Park</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!sameAddressEquipment">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="City" type="text" id="City"
+                                            class="form-control">
+                                        <label for="City" class=""><span style="color: red;">*</span> City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Zip" type="text" id="Zip"
+                                            class="form-control">
+                                        <label for="Zip" class=""><span style="color: red;">*</span> Zip</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+                <!--<div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <h6 style="text-align: center;">Create New Equipment</h6>
+                        <br>
+                        <form [formGroup]="formEquiment">
+
+                            <div class="row">
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="productiveUnits" [filterEnabled]="true"
+                                            [multiple]="false" [highlightFirst]="false"
+                                            formControlName="ProductiveUnitId" label="* Select Productive Unit"
+                                            [enableSelectAll]="false" (ngModelChange)="onChangeEquipments($event)">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12" *ngIf="isEquipment">
+                                    <div class="md-form">
+                                        <mdb-select [options]="equipments" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="ParentEquipmentId"
+                                            label="Select Parent Equipment" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="EquipmentName" type="text" id="EquipmentName"
+                                            class="form-control">
+                                        <label for="EquipmentName" class=""><span style="color: red;">*</span> Equipment
+                                            Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="EquipmentCode" type="text" id="EquipmentCode"
+                                            class="form-control">
+                                        <label for="EquipmentCode" class=""><span style="color: red;">*</span> Equipment
+                                            Code</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div style="padding: 15px;">
+                                    <mdb-checkbox (click)="sameAddressTogglerEquipment()">Is Address Same as Productive
+                                        Unit?</mdb-checkbox>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!equipmentSameAddress">
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <mdb-select [options]="countries" [filterEnabled]="true" [multiple]="false"
+                                            [highlightFirst]="false" formControlName="CountryId"
+                                            label="* Select Country" [enableSelectAll]="false">
+                                        </mdb-select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address" type="text" id="Address"
+                                            class="form-control">
+                                        <label for="Address" class=""><span style="color: red;">*</span> Address, 1st
+                                            Floor South Block</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Address2" type="text" id="Address2"
+                                            class="form-control">
+                                        <label for="Address2" class="">Borrowdale Office Park</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="!equipmentSameAddress">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="City" type="text" id="City"
+                                            class="form-control">
+                                        <label for="City" class=""><span style="color: red;">*</span> City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="md-form">
+                                        <input mdbInput formControlName="Zip" type="number" id="Zip"
+                                            class="form-control">
+                                        <label for="Zip" class=""><span style="color: red;">*</span> Zip</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>-->
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info waves-light"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect
+                    (click)="saveEquipment()" [disabled]="!formEquiment.valid">
+                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                    Add Equipment</button>
+                <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                    (click)="equipmentModal.hide()"
+                    style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                        class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@import "~ng-uikit-pro-standard/assets/scss/core/colors";
+@import "~ng-uikit-pro-standard/assets/scss/core/variables";
+@import "~ng-uikit-pro-standard/assets/scss/core/variables-pro";
+
+@import "~ng-uikit-pro-standard/assets/scss/addons-pro/_chat-pro.scss";
+@import "~ng-uikit-pro-standard/assets/scss/addons-pro/_ecommerce-pro.scss";
+
+/* You can add global styles to this file, and also import other style files */
+.nav-left{
+    background-color: rgba(0, 69, 125, 1) !important;
+    //background-image: linear-gradient(160deg, #1b5e20 , #4caf50 );
+}
+
+.icons-sm{
+    color: rgba(0, 69, 125, 1) !important;
+}
+
+//html, body {
+ //   max-width: 100%;
+ //   overflow-x: hidden;
+//}

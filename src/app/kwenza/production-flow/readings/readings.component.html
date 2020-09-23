@@ -1,0 +1,896 @@
+<div style="zoom: 75%; padding: 50px;">
+    <button type="button" class="btn btn-info waves-light" aria-label="Close" mdbWavesEffect (click)="back()" style="background-color: rgba(0, 69, 125, 1); color: white;"> <i
+            class="fa fa-arrow-left"></i> BACK</button>
+
+
+    <h4 style="font-weight: bold; text-align: center;">ASSET READING: {{assetName}}<!--- {{date | date: "MMMM-yyyy"}}--></h4>
+    <br><br>
+
+    <div>
+        <form class="text-center" style="color: #757575;" [formGroup]="dateForm">
+            <div class="form-row">
+                <div class="col">
+                    <mdb-date-picker name="SelectedDate" [placeholder]="'Select Date To Set Target'"
+                        formControlName="SelectedDate" required></mdb-date-picker>
+                </div>
+                <div class="col" *ngIf="isSuperAdmin || isAdmin">
+                    <button type="button" class="btn btn-info waves-light" style="float: right; background-color: rgba(0, 69, 125, 1); color: white;" aria-label="Close"
+                        mdbWavesEffect (click)="closeMonthlyReadings()"> <i class="fa fa-lock"></i> CLOSE MONTH READINGS</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-info waves-light" style="float: right;" aria-label="Close"
+                        mdbWavesEffect (click)="monthlyMonthlyReadings()" style="background-color: rgba(0, 69, 125, 1); color: white;"> <i class="fa fa-calculator"></i> MONTHLY READINGS</button>
+                </div>
+                <div class="col" *ngIf="isSuperAdmin || isAdmin">
+                    <button type="button" class="btn btn-info waves-light" style="float: right;" aria-label="Close"
+                        mdbWavesEffect (click)="setTarget()" style="background-color: rgba(0, 69, 125, 1); color: white;"> <i class="fa fa-cogs"></i> SET MONTHLY TARGETS</button>
+
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-info waves-light" style="float: right;" aria-label="Close"
+                        mdbWavesEffect (click)="monthlyReport()" style="background-color: rgba(0, 69, 125, 1); color: white;"> <i class="fa fa-book"></i> MONTHLY REPORT</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <br>
+
+    <table *ngIf="isDefaultTable" datatable [dtOptions]="dtOptions" class="table table-striped" cellspacing="0"
+        width="100%">
+        <thead>
+
+            <th class="th-sm"></th>
+            <th class="th-sm" style="background-color: brown">SHE</th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0);"></th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0); color: white; margin-right: 0; padding-right: 0 !important">Drill</th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0);color: white;">&</th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0); color: white; margin-left: 0; padding-left: 0 !important">Blast</th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0);"></th>
+
+            <th class="th-sm" style="background-color: rgb(5, 156, 5);"></th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5);"></th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white; margin-right: 0; padding-right: 0 !important">Load</th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white;">&</th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white; margin-left: 0; padding-left: 0 !important">Haul</th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5);"></th>
+
+            <th class="th-sm" style="background-color: rgb(7, 7, 7); color: white;">Support</th>
+            <th class="th-sm" style="background-color: rgb(7, 7, 7);"></th>
+
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white; margin-right: 0; padding-right: 0;">Face </th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white;">Preparation</th>
+
+            <th class="th-sm" style="background-color: red;"></th>
+            <th class="th-sm" style="background-color: red;"></th>
+            <th class="th-sm" style="background-color: red; color: white; margin-right: 0; padding-right: 0 !important">Equipment</th>
+            <th class="th-sm" style="background-color: red; color: white;">Status</th>
+            <th class="th-sm" style="background-color: red; color: white;"></th>
+            <th class="th-sm" style="background-color: red;"></th>
+        </thead>
+        <thead>
+
+            <th class="th-sm"></th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+        </thead>
+        <thead>
+            <tr>
+                <th class="th-sm"></th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">SHE Incidents</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Day 1st 4 Hours Ends</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Night 1st 4Hours Ends</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Drilled</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Blasted</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Unlashed Ends</th>
+
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Lashed</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Total Cleaned Ends</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Lashed Prepared For Support
+                </th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Muckbay Tons</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Hoisted Tons</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">UG Crusher Bin</th>
+
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Supported</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Supported Ends</th>
+
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Prepared</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Prepared Marked Ends</th>
+
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Drill Rigs</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">LHDs</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Dump Trucks</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Bolters</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Drifters</th>
+                <th></th>
+            </tr>
+        </thead>
+        <thead>
+
+            <th class="th-sm">Frequency</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+        </thead>
+        <tbody>
+            <tr *ngIf="istargetTemplateObject">
+                <td style="font-weight: bold;">Month Target</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.sheMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.day1st4HoursEndsMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.night1st4HoursEndsMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsDrilledMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsBlastedMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.unlashedEndsMonthTarget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsLashedMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.totalCleanedEndsMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.lashedPreparedForSupportMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.muckbayTonsMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.hoistedTonsMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.ugCrusherBinMonthTarget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsSupportedMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.supportedEndsMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsPreparedMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.preparedMarkedEndsMonthTarget}}</td>
+
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.drillRigsMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.lhDsMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.dumpTrucksMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.boltersMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.driftersMonthTarget}}</td>
+            </tr>
+            <tr *ngIf="istargetTemplateObject">
+                <td style="font-weight: bold;">Target</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.sheTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.day1st4HoursEndsTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.night1st4HoursEndsTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsDrilledTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsBlastedTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.unlashedEndsTarget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsLashedTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.totalCleanedEndsTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.lashedPreparedForSupportTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.muckbayTonsTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.hoistedTonsTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.ugCrusherBinTarget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsSupportedTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.supportedEndsTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsPreparedTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.preparedMarkedEndsTarget}}</td>
+
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.drillRigsTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.lhDsTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.dumpTrucksTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.boltersTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.driftersTarget}}</td>
+            </tr>
+
+            <tr *ngIf="istargetTemplateObject">
+                <td style="font-weight: bold;">Budget</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.sheBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.day1st4HoursEndsBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.night1st4HoursEndsBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsDrilledBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsBlastedBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.unlashedEndsBudget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsLashedBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.totalCleanedEndsBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.lashedPreparedForSupportBudget}}</td>
+                <td style="font-weight: bold;"style="background-color: orange;">{{targetTemplateObject.muckbayTonsBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.hoistedTonsBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.ugCrusherBinBudget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsSupportedBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.supportedEndsBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsPreparedBudget}}</td>
+                <td style="font-weight: bold;"style="background-color: orange;">{{targetTemplateObject.preparedMarkedEndsBudget}}</td>
+
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.drillRigsBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.lhDsBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.dumpTrucksBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.boltersBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.driftersBudget}}</td>
+            </tr>
+
+            <tr *ngIf="istargetTemplateObject">
+                <td style="font-weight: bold;">Threshold</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.sheThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.day1st4HoursEndsThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.night1st4HoursEndsThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsDrilledThreshold}}</td>
+                <td style="font-weight: bold;" ><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsBlastedThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.unlashedEndsThreshold}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsLashedThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.totalCleanedEndsThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.lashedPreparedForSupportThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.muckbayTonsThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.hoistedTonsThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.ugCrusherBinThreshold}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsSupportedThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.supportedEndsThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsPreparedThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.preparedMarkedEndsThreshold}}</td>
+
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.drillRigsThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.lhDsThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.dumpTrucksThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.boltersThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.driftersThreshold}}</td>
+            </tr>
+            <tr>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+            </tr>
+
+            <tr *ngFor="let s of readings;">
+                <td>{{s.dateProduction | date: "dd-MMM-yyyy"}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                    [ngStyle]="{'background-color': getSheColor(s.she)}"></span>
+                &nbsp; {{s.she}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.day1st4HoursEnds, s.day1st4HoursEndsTarget, s.day1st4HoursEndsThreshold)}"></span>
+                    &nbsp; {{s.day1st4HoursEnds}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.night1st4HoursEnds, s.night1st4HoursEndsTarget, s.night1st4HoursEndsThreshold)}"></span>
+                    &nbsp; {{s.night1st4HoursEnds}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsDrilled, s.endsDrilledTarget, s.endsDrilledThreshold)}"></span>
+                    &nbsp; {{s.endsDrilled}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsBlasted, s.endsBlastedTarget, s.endsBlastedThreshold)}"></span>
+                    &nbsp; {{s.endsBlasted}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.unlashedEnds, s.unlashedEndsTarget, s.unlashedEndsThreshold)}">
+                    {{s.unlashedEnds}}</td>
+
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsLashed, s.endsLashedTarget, s.endsLashedThreshold)}"></span>
+                    &nbsp;{{s.endsLashed}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.totalCleanedEnds, s.totalCleanedEndsTarget, s.totalCleanedEndsThreshold)}">
+                    {{s.totalCleanedEnds}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.lashedPreparedForSupport, s.lashedPreparedForSupportTarget, s.lashedPreparedForSupportThreshold)}">
+                    {{s.lashedPreparedForSupport}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.muckbayTons, s.muckbayTonsTarget, s.muckbayTonsThreshold)}">
+                    {{s.muckbayTons}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.hoistedTons, s.hoistedTonsTarget, s.hoistedTonsThreshold)}"></span>
+                    &nbsp;{{s.hoistedTons}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.ugCrusherBin, s.ugCrusherBinTarget, s.ugCrusherBinThreshold)}">
+                    {{s.ugCrusherBin}}</td>
+
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsSupported, s.endsSupportedTarget, s.endsSupportedThreshold)}"></span>
+                    &nbsp;{{s.endsSupported}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.supportedEnds, s.supportedEndsTarget, s.supportedEndsThreshold)}">
+                    {{s.supportedEnds}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsPrepared, s.endsPreparedTarget, s.endsPreparedThreshold)}"></span>
+                    &nbsp;{{s.endsPrepared}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.preparedMarkedEnds, s.preparedMarkedEndsTarget, s.preparedMarkedEndsThreshold)}">
+                    {{s.preparedMarkedEnds}}</td>
+
+                <td [ngStyle]="{'background-color': getColor(s.drillRigs, s.drillRigsTarget, s.drillRigsThreshold)}">
+                    {{s.drillRigs}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.lhDs, s.lhDsTarget, s.lhDsThreshold)}">{{s.lhDs}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.dumpTrucks, s.dumpTrucksTarget, s.dumpTrucksThreshold)}">
+                    {{s.dumpTrucks}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.bolters, s.boltersTarget, s.boltersThreshold)}">
+                    {{s.bolters}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.drifters, s.driftersTarget, s.driftersThreshold)}">
+                    {{s.drifters}}</td>
+                <td *ngIf="!s.isClosed && !isGuest"><button type="button" class="btn btn-success px-3" (click)="editReading(s)"><i class="fa fa-pen"
+                            aria-hidden="true" style="padding-right:5px"></i></button></td>
+
+                <td *ngIf="s.isClosed"><button type="button" class="btn btn-warning px-3" (click)="closed(s)"><i class="fa fa-lock"
+                    aria-hidden="true" style="padding-right:5px"></i></button></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <table *ngIf="!isDefaultTable" datatable [dtOptions]="dtOptions2" class="table table-striped" cellspacing="0"
+        width="100%">
+
+
+        <thead>
+
+            <th class="th-sm"></th>
+            <th class="th-sm" style="background-color: brown">SHE</th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0);"></th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0); color: white; margin-right: 0; padding-right: 0 !important">Drill</th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0);color: white;">&</th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0); color: white; margin-left: 0; padding-left: 0 !important">Blast</th>
+            <th class="th-sm" style="background-color: rgb(255, 153, 0);"></th>
+
+            <th class="th-sm" style="background-color: rgb(5, 156, 5);"></th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5);"></th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white; margin-right: 0; padding-right: 0 !important">Load</th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white;">&</th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white; margin-left: 0; padding-left: 0 !important">Haul</th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5);"></th>
+
+            <th class="th-sm" style="background-color: rgb(7, 7, 7); color: white;">Support</th>
+            <th class="th-sm" style="background-color: rgb(7, 7, 7);"></th>
+
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white; margin-right: 0; padding-right: 0;">Face </th>
+            <th class="th-sm" style="background-color: rgb(5, 156, 5); color: white;">Preparation</th>
+
+            <th class="th-sm" style="background-color: red;"></th>
+            <th class="th-sm" style="background-color: red;"></th>
+            <th class="th-sm" style="background-color: red; color: white; margin-right: 0; padding-right: 0 !important">Equipment</th>
+            <th class="th-sm" style="background-color: red; color: white;">Status</th>
+            <th class="th-sm" style="background-color: red; color: white;"></th>
+            <th class="th-sm" style="background-color: red;"></th>
+        </thead>
+        <thead>
+
+            <th class="th-sm"></th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+
+            <th class="th-sm" style="font-weight: 100; color: blue;">Process (Rate)</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+            <th class="th-sm" style="font-weight: 100; color: blue;">Buffer</th>
+        </thead>
+        <thead>
+            <tr>
+                <th class="th-sm"></th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">SHE Incidents</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Day 1st 4 Hours Ends</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Night 1st 4Hours Ends</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Drilled</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Blasted</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Unlashed Ends</th>
+
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Lashed</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Total Cleaned Ends</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Lashed Prepared For Support
+                </th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Muckbay Tons</th>
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Hoisted Tons</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">UG Crusher Bin</th>
+
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Supported</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Supported Ends</th>
+
+                <th class="th-sm" style="background-color: rgb(34, 184, 243);">Ends Prepared</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Prepared Marked Ends</th>
+
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Drill Rigs</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">LHDs</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Dump Trucks</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Bolters</th>
+                <th class="th-sm" style="background-color: rgb(5, 100, 155); color: white;">Drifters</th>
+                <th></th>
+            </tr>
+        </thead>
+        <thead>
+
+            <th class="th-sm">Frequency</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+
+            <th class="th-sm" style=" color: blue;">Per Day</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+            <th class="th-sm" style=" color: blue;">Available</th>
+        </thead>
+        <tbody>
+
+            <tr *ngIf="istargetTemplateObject2">
+                <td style="font-weight: bold;">Month Target</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.sheMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.day1st4HoursEndsMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.night1st4HoursEndsMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsDrilledMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsBlastedMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.unlashedEndsMonthTarget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsLashedMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.totalCleanedEndsMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.lashedPreparedForSupportMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.muckbayTonsMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.hoistedTonsMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.ugCrusherBinMonthTarget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsSupportedMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.supportedEndsMonthTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsPreparedMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.preparedMarkedEndsMonthTarget}}</td>
+
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.drillRigsMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.lhDsMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.dumpTrucksMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.boltersMonthTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.driftersMonthTarget}}</td>
+            </tr>
+            <tr *ngIf="istargetTemplateObject2">
+                <td style="font-weight: bold;">Target</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.sheTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.day1st4HoursEndsTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.night1st4HoursEndsTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsDrilledTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsBlastedTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.unlashedEndsTarget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsLashedTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.totalCleanedEndsTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.lashedPreparedForSupportTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.muckbayTonsTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.hoistedTonsTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.ugCrusherBinTarget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsSupportedTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.supportedEndsTarget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: limegreen;"></span>{{targetTemplateObject.endsPreparedTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.preparedMarkedEndsTarget}}</td>
+
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.drillRigsTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.lhDsTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.dumpTrucksTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.boltersTarget}}</td>
+                <td style="font-weight: bold;" style="background-color: limegreen;">{{targetTemplateObject.driftersTarget}}</td>
+            </tr>
+
+            <tr *ngIf="istargetTemplateObject2">
+                <td style="font-weight: bold;">Budget</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.sheBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.day1st4HoursEndsBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.night1st4HoursEndsBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsDrilledBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsBlastedBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.unlashedEndsBudget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsLashedBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.totalCleanedEndsBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.lashedPreparedForSupportBudget}}</td>
+                <td style="font-weight: bold;"style="background-color: orange;">{{targetTemplateObject.muckbayTonsBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.hoistedTonsBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.ugCrusherBinBudget}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsSupportedBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.supportedEndsBudget}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: orange;"></span>{{targetTemplateObject.endsPreparedBudget}}</td>
+                <td style="font-weight: bold;"style="background-color: orange;">{{targetTemplateObject.preparedMarkedEndsBudget}}</td>
+
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.drillRigsBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.lhDsBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.dumpTrucksBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.boltersBudget}}</td>
+                <td style="font-weight: bold;" style="background-color: orange;">{{targetTemplateObject.driftersBudget}}</td>
+            </tr>
+
+            <tr *ngIf="istargetTemplateObject2">
+                <td style="font-weight: bold;">Threshold</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.sheThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.day1st4HoursEndsThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.night1st4HoursEndsThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsDrilledThreshold}}</td>
+                <td style="font-weight: bold;" ><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsBlastedThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.unlashedEndsThreshold}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsLashedThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.totalCleanedEndsThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.lashedPreparedForSupportThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.muckbayTonsThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.hoistedTonsThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.ugCrusherBinThreshold}}</td>
+
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsSupportedThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.supportedEndsThreshold}}</td>
+                <td style="font-weight: bold;"><span style="padding: 2px 11px; border-radius: 100%; background-color: red;"></span>{{targetTemplateObject.endsPreparedThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.preparedMarkedEndsThreshold}}</td>
+
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.drillRigsThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.lhDsThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.dumpTrucksThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.boltersThreshold}}</td>
+                <td style="font-weight: bold;" style="background-color: red;">{{targetTemplateObject.driftersThreshold}}</td>
+            </tr>
+
+
+            <!--<tr *ngIf="istargetTemplateObject2" style="background-color: limegreen;">
+                <td style="font-weight: bold;">Month Target</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.sheMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.day1st4HoursEndsMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.night1st4HoursEndsMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsDrilledMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsBlastedMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.unlashedEndsMonthTarget}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.endsLashedMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.totalCleanedEndsMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.lashedPreparedForSupportMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.muckbayTonsMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.hoistedTonsMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.ugCrusherBinMonthTarget}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.endsSupportedMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.supportedEndsMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsPreparedMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.preparedMarkedEndsMonthTarget}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.drillRigsMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.lhDsMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.dumpTrucksMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.boltersMonthTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.driftersMonthTarget}}</td>
+            </tr>
+            <tr *ngIf="istargetTemplateObject2" style="background-color: limegreen;">
+                <td style="font-weight: bold;">Target</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.sheTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.day1st4HoursEndsTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.night1st4HoursEndsTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsDrilledTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsBlastedTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.unlashedEndsTarget}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.endsLashedTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.totalCleanedEndsTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.lashedPreparedForSupportTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.muckbayTonsTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.hoistedTonsTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.ugCrusherBinTarget}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.endsSupportedTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.supportedEndsTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsPreparedTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.preparedMarkedEndsTarget}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.drillRigsTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.lhDsTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.dumpTrucksTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.boltersTarget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.driftersTarget}}</td>
+            </tr>
+
+            <tr *ngIf="istargetTemplateObject2" style="background-color: orange;">
+                <td style="font-weight: bold;">Budget</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.sheBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.day1st4HoursEndsBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.night1st4HoursEndsBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsDrilledBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsBlastedBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.unlashedEndsBudget}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.endsLashedBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.totalCleanedEndsBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.lashedPreparedForSupportBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.muckbayTonsBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.hoistedTonsBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.ugCrusherBinBudget}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.endsSupportedBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.supportedEndsBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsPreparedBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.preparedMarkedEndsBudget}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.drillRigsBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.lhDsBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.dumpTrucksBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.boltersBudget}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.driftersBudget}}</td>
+            </tr>
+
+            <tr *ngIf="istargetTemplateObject2" style="background-color: red;">
+                <td style="font-weight: bold;">Threshold</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.sheThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.day1st4HoursEndsThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.night1st4HoursEndsThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsDrilledThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsBlastedThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.unlashedEndsThreshold}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.endsLashedThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.totalCleanedEndsThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.lashedPreparedForSupportThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.muckbayTonsThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.hoistedTonsThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.ugCrusherBinThreshold}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.endsSupportedThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.supportedEndsThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.endsPreparedThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.preparedMarkedEndsThreshold}}</td>
+
+                <td style="font-weight: bold;">{{targetTemplateObject.drillRigsThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.lhDsThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.dumpTrucksThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.boltersThreshold}}</td>
+                <td style="font-weight: bold;">{{targetTemplateObject.driftersThreshold}}</td>
+            </tr>-->
+            <tr>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+                <td style="padding: 0;">
+                    <hr style="border: 1px solid grey;">
+                </td>
+            </tr>
+            <tr *ngFor="let s of readings;">
+                <td>{{s.dateProduction | date: "dd-MMM-yyyy"}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                    [ngStyle]="{'background-color': getSheColor(s.she)}"></span>
+                &nbsp; {{s.she}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.day1st4HoursEnds, s.day1st4HoursEndsTarget, s.day1st4HoursEndsThreshold)}"></span>
+                    &nbsp; {{s.day1st4HoursEnds}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.night1st4HoursEnds, s.night1st4HoursEndsTarget, s.night1st4HoursEndsThreshold)}"></span>
+                    &nbsp; {{s.night1st4HoursEnds}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsDrilled, s.endsDrilledTarget, s.endsDrilledThreshold)}"></span>
+                    &nbsp; {{s.endsDrilled}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsBlasted, s.endsBlastedTarget, s.endsBlastedThreshold)}"></span>
+                    &nbsp; {{s.endsBlasted}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.unlashedEnds, s.unlashedEndsTarget, s.unlashedEndsThreshold)}">
+                    {{s.unlashedEnds}}</td>
+
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsLashed, s.endsLashedTarget, s.endsLashedThreshold)}"></span>
+                    &nbsp;{{s.endsLashed}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.totalCleanedEnds, s.totalCleanedEndsTarget, s.totalCleanedEndsThreshold)}">
+                    {{s.totalCleanedEnds}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.lashedPreparedForSupport, s.lashedPreparedForSupportTarget, s.lashedPreparedForSupportThreshold)}">
+                    {{s.lashedPreparedForSupport}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.muckbayTons, s.muckbayTonsTarget, s.muckbayTonsThreshold)}">
+                    {{s.muckbayTons}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.hoistedTons, s.hoistedTonsTarget, s.hoistedTonsThreshold)}"></span>
+                    &nbsp;{{s.hoistedTons}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.ugCrusherBin, s.ugCrusherBinTarget, s.ugCrusherBinThreshold)}">
+                    {{s.ugCrusherBin}}</td>
+
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsSupported, s.endsSupportedTarget, s.endsSupportedThreshold)}"></span>
+                    &nbsp;{{s.endsSupported}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.supportedEnds, s.supportedEndsTarget, s.supportedEndsThreshold)}">
+                    {{s.supportedEnds}}</td>
+                <td><span style="padding: 2px 11px; border-radius: 100%;"
+                        [ngStyle]="{'background-color': getColor(s.endsPrepared, s.endsPreparedTarget, s.endsPreparedThreshold)}"></span>
+                    &nbsp;{{s.endsPrepared}}</td>
+                <td
+                    [ngStyle]="{'background-color': getColor(s.preparedMarkedEnds, s.preparedMarkedEndsTarget, s.preparedMarkedEndsThreshold)}">
+                    {{s.preparedMarkedEnds}}</td>
+
+                <td [ngStyle]="{'background-color': getColor(s.drillRigs, s.drillRigsTarget, s.drillRigsThreshold)}">
+                    {{s.drillRigs}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.lhDs, s.lhDsTarget, s.lhDsThreshold)}">{{s.lhDs}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.dumpTrucks, s.dumpTrucksTarget, s.dumpTrucksThreshold)}">
+                    {{s.dumpTrucks}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.bolters, s.boltersTarget, s.boltersThreshold)}">
+                    {{s.bolters}}</td>
+                <td [ngStyle]="{'background-color': getColor(s.drifters, s.driftersTarget, s.driftersThreshold)}">
+                    {{s.drifters}}</td>
+                <td *ngIf="!s.isClosed"><button type="button" class="btn btn-success px-3" (click)="editReading(s)"><i class="fa fa-pen"
+                            aria-hidden="true" style="padding-right:5px"></i></button></td>
+                            <td *ngIf="s.isClosed"><button type="button" class="btn btn-warning px-3" (click)="closed(s)"><i class="fa fa-lock"
+                                aria-hidden="true" style="padding-right:5px"></i></button></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+</div>

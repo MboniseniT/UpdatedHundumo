@@ -1,0 +1,248 @@
+<div class="container">
+
+    <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect (click)="back()"
+    style="background-color: rgba(0, 69, 125, 1)!important; color: white;"> <i class="fa fa-arrow-left"></i>
+    BACK</button>
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="border: 1px solid grey;">
+            <h5 style="text-align: center; color: orangered;">ASSET CONFIG | KPA Process (<span style="font-weight: bolder;">{{processName}} * {{processDate}}</span>)</h5>
+            <br>
+            <h6 style="text-align: center;">ASSET CODE: {{code}}</h6>
+            <h6 style="text-align: center;">ASSET NAME: {{name}}</h6>
+            <h6 style="text-align: center;">ASSET PARENT: {{parent}}</h6>
+            <h6 style="text-align: center;">ASSET ROOT: {{root}}</h6>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+<br>
+<br>
+    <form class="text-center" style="color: #757575;" [formGroup]="kpaConfigForm">
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="text" formControlName="KpaName" id="KpaName" class="form-control" mdbInput>
+                    <label for="KpaName">KPA Name</label>
+                </div>
+            </div>
+    
+
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="colors" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                        formControlName="KpaColor" label="* Select KPA Text Color" [enableSelectAll]="false">
+                    </mdb-select>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="colors" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                        formControlName="KpaBackgroundColor" label="* Select KPA Background Color"
+                        [enableSelectAll]="false">
+                    </mdb-select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="kpaTypes" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                        formControlName="KpaTypeId" label="* Select KPA Type, e.g Process"
+                        [enableSelectAll]="false">
+                    </mdb-select>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <input type="text" formControlName="Frequency" id="Frequency" class="form-control" mdbInput>
+                    <label for="Frequency">Frequency, e.g Per Day</label>
+                </div>
+            </div>
+
+        </div>
+
+        <button type="button" class="btn btn-info waves-light" style="background-color: rgba(0, 69, 125, 1) !important; color: white;"
+            mdbWavesEffect (click)="saveKPA()" [disabled]="!kpaConfigForm.valid">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            Save New KPA</button>
+
+        <div *ngIf="loading" class="d-flex justify-content-center">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-red-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <br>
+    <div>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Process</th>
+                    <th>Type</th>
+                    <th>Color</th>
+                    <th>Background Color</th>
+                    <th>Is Target Set</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>Set KPAs Targets</th>
+                    <th>Configure Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of kpas" style="cursor: pointer;">
+                    <td>{{p.name}}</td>
+                    <td>{{p.dateMonth}}</td>
+                    <td>{{p.process}}</td>
+                    <td>{{p.type}}</td>
+                    <td>{{p.color}}</td>
+                    <td>{{p.backgroundColor}}</td>
+                    <td *ngIf="p.isTargetSet" style="background-color: green;">Yes</td>
+                    <td *ngIf="!p.isTargetSet" style="background-color: red;">No</td>
+                    <td>
+                        <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                            (click)="editKpa(p)"
+                            style="background-color: rgba(0, 69, 125, 1) !important; color: white;"> <i
+                                class="far fa-edit"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                            (click)="deleteKPA(p)"
+                            style="background-color: red !important; color: white;"> <i
+                                class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                            (click)="targets(p)"
+                            style="background-color:green !important; color: black;"> <i
+                                class="fa fa-calculator"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button *ngIf="p.isProcessSummary" type="button" class="btn btn-info" aria-label="Close" mdbWavesEffect
+                            (click)="configureSummaryValue(p)"
+                            style="background-color:purple !important; color: black;"> <i
+                                class="fa fa-cogs"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+        <!--Edit Process Node-->
+<div mdbModal #editKPAModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+aria-labelledby="myBasicModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <h4 style="text-align: center;">Update KPA</h4>
+
+            <button type="button" class="close pull-right" aria-label="Close" (click)="editKPAModal.hide()">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <h6 style="text-align: center; color: red;">Selected Process: {{process}}</h6>
+                    <br>
+                    <form class="text-center" style="color: #757575;" [formGroup]="kpaConfigForm">
+
+                        <div class="form-row">
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <input type="text" formControlName="KpaName" id="KpaName" class="form-control" mdbInput>
+                                    <label for="KpaName">KPA Name</label>
+                                </div>
+                            </div>
+                    
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <mdb-select [options]="colors" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                                        formControlName="KpaColor" label="* Select KPA Text Color" [enableSelectAll]="false">
+                                    </mdb-select>
+                                </div>
+                            </div>
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <mdb-select [options]="colors" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                                        formControlName="KpaBackgroundColor" label="* Select KPA Background Color"
+                                        [enableSelectAll]="false">
+                                    </mdb-select>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="form-row">
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <mdb-select [options]="kpaTypes" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                                        formControlName="KpaTypeId" label="* Select KPA Type, e.g Process"
+                                        [enableSelectAll]="false">
+                                    </mdb-select>
+                                </div>
+                            </div>
+                
+                            <div class="col">
+                                <div class="md-form">
+                                    <input type="text" formControlName="Frequency" id="Frequency" class="form-control" mdbInput>
+                                    <label for="Frequency">Frequency, e.g Per Day</label>
+                                </div>
+                            </div>
+                
+                        </div>
+                
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info waves-light"
+                style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect
+                (click)="updateKPA(kpaConfigForm.value)" [disabled]="!kpaConfigForm.valid">
+                <i class="far fa-edit" aria-hidden="true"></i>
+                Update KPA</button>
+            <button type="button" class="btn btn-secondary waves-light" aria-label="Close"
+                (click)="editKPAModal.hide()"
+                style="background-color: rgba(0, 69, 125, 1) !important; color: white;" mdbWavesEffect> <i
+                    class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
+        </div>
+
+    </div>
+</div>
+</div>
+
+</div>
