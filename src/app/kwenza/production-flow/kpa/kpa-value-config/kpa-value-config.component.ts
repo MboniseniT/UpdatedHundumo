@@ -9,7 +9,8 @@ import { MainServiceService } from 'src/app/services/main-service.service';
 })
 export class KpaValueConfigComponent implements OnInit {
 
-  dynamicFormular: string = 'Under Construction!';
+  dynamicFormular: string = 'Under Construction!!!';
+  
   keyProcessAreaId: number;
 
   constructor(private route: ActivatedRoute, private service: MainServiceService, 
