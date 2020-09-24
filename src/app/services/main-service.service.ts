@@ -36,6 +36,14 @@ export class MainServiceService {
     return this.http.get<any[]>(this.urlBase+"Kwenza/ProductionFlowConfiguration/kpa");
   }
 
+  getMathsOperators() {
+    return this.http.get<any[]>(this.urlBase+"Kwenza/ProductionFlowConfiguration/mathsOperator");
+  }
+
+  saveFormulaCreation(model){
+    return this.http.post<any[]>(this.urlBase+'Kwenza/ProductionFlowConfiguration/formularCreation', JSON.stringify(model), this.httpOptions);
+  }
+
   GetClientAssetKPAs(keyProcessAreaId) {
     return this.http.get<any[]>(this.urlBase+'Kwenza/ProductionFlowConfiguration/GetClientAssetKPAs?keyProcessAreaId=' + keyProcessAreaId);
   }

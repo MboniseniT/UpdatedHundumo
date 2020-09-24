@@ -1,3 +1,59 @@
 <div class="container">
-    <h5 style="text-align: center; font-weight: bold;">{{dynamicFormular}}</h5>
+    <h5 style="text-align: center; font-weight: bold;">Formular Configuration</h5>
+    <br><br>
+    <div>
+        <p style="text-align: center; color: red;">{{formularChainString}}</p>
+    </div>
+    <br>
+    <form class="text-center" style="color: #757575;" [formGroup]="kpaSummaryConfigForm">
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="kpas" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                        formControlName="kpa" label="* Select KPA as Formula Variable"
+                        [enableSelectAll]="false" (ngModelChange)="SaveKpa()">
+                    </mdb-select>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="md-form">
+                    <mdb-select [options]="operators" [filterEnabled]="true" [multiple]="false" [highlightFirst]="false"
+                        formControlName="operator" label="* Select Operrator to apply after selected kpa"
+                        [enableSelectAll]="false" (ngModelChange)="SaveOperation()">
+                    </mdb-select>
+                </div>
+            </div>
+
+        </div>
+
+        <button type="button" class="btn btn-info waves-light" style="background-color: rgba(0, 69, 125, 1) !important; color: white;"
+            mdbWavesEffect (click)="Save()" [disabled]="!kpaSummaryConfigForm.valid">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            Extend Formula / Save</button>
+
+            <button type="button" class="btn btn-info waves-light" style="background-color: rgba(0, 69, 125, 1) !important; color: white;"
+            mdbWavesEffect (click)="Refresh()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+            Refresh</button>
+
+        <div *ngIf="loading" class="d-flex justify-content-center">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-red-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
 </div>

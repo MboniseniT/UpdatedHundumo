@@ -25,12 +25,15 @@ export class ChartsComponent implements OnInit {
   chartForm: FormGroup;
   assetId: number;
   loading: boolean;
+  index: number;
 
   masterCharts: Array<MasterChart>;
   masterChart: MasterChart;
   controlLimit: ControlLimit;
   controlLimits: Array<ControlLimit>;
   ChartNames: Array<ChartNameObject> = [];
+
+  lCharts: Array<any> = [];
   
 
   public optionsWhiskerBox1: any = {
@@ -64,6 +67,7 @@ public optionsHistogram5: any = {};
   data5: Array<any> = [];
   codeName: string;
   asset: any;
+  chartNames: Array<string> = [];
 
   constructor(private service: MainServiceService,
     private route: ActivatedRoute, private router: Router, 
@@ -98,7 +102,7 @@ public optionsHistogram5: any = {};
 dates: Array<string>;
 
   LoadChart(){
-    //Set Parameters
+
     this.loading = true;
 
     const model ={
@@ -110,24 +114,17 @@ dates: Array<string>;
     if(model.StartDate != '' && model.EndDate != '' && model.EndDate > model.StartDate){
     this.service.DrawChart(model)
     .subscribe((resp:any)=>{
+
       this.masterCharts = resp;
+   
 
-      this.masterCharts.forEach(function(value) {
+      for (let value of this.masterCharts) {
 
-        const controlLimit = {
-          dates: value.controlLimit.dates,
-          values: value.controlLimit.measurements,
-          mean: value.controlLimit.mean,
-          ucl: value.controlLimit.ucl,
-          lcl: value.controlLimit.lcl,
-          name: value.kpaName,
-          startDate: value.startDate,
-          endDate: value.endDate
-        };
+        this.chartNames = ['TotalHoistedTons', 'EndsDrilled', 'ROMTonsCrushed']
 
-        console.log(controlLimit);
+        this.loading = false;
 
-        /*Highcharts.chart('line1', {
+        let chart = {
           chart: {
               type: 'spline'
           },
@@ -159,11 +156,23 @@ dates: Array<string>;
               data: value.controlLimit.measurements
       
           }]
-      });
-        */
+      }
 
-      });
 
+        this.lCharts.push({name: value.kpaName, objectChart: chart});
+    }
+
+    debugger;
+
+    console.log(this.lCharts);
+
+
+    for (let c of this.lCharts) {
+      
+      const name = c.name.replaceAll(' ', '');
+      Highcharts.chart('TotalHoistedTons', c.objectChart);
+
+    }
 
 
 
@@ -1342,8 +1351,8 @@ dates: Array<string>;
       Highcharts.chart('histogramChart2', this.optionsHistogram2);
       Highcharts.chart('histogramChart3', this.optionsHistogram3);
       Highcharts.chart('histogramChart4', this.optionsHistogram4);
-      Highcharts.chart('histogramChart5', this.optionsHistogram5);
-      this.loading = false;*/
+      Highcharts.chart('histogramChart5', this.optionsHistogram5);*/
+      this.loading = false;
     }, (error:any)=>{
       console.log(error);
       this.toastrService.error(error.error);
